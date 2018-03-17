@@ -1,10 +1,9 @@
-package com.xyoye.danmuxposed.util;
+package com.xyoye.danmuxposed.xposed;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,7 +14,6 @@ import java.util.List;
 import dalvik.system.PathClassLoader;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
