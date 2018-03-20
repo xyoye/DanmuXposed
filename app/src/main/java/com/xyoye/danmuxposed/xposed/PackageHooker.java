@@ -1,6 +1,7 @@
 package com.xyoye.danmuxposed.xposed;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
@@ -26,14 +27,11 @@ public class PackageHooker {
     public PackageHooker(XC_LoadPackage.LoadPackageParam param) {
         loadPackageParam = param;
         try {
-            try {
-                hook();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        } catch (IOException e) {
-
-
+            //hook();
+            Class clazz = Class.forName("com.mxtech.media.FFPlayer", false, loadPackageParam.classLoader);
+            dumpClass(clazz);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -48,7 +46,7 @@ public class PackageHooker {
 
             if (isClassNameValid(className)) {
                 final Class clazz = Class.forName(className, false, loadPackageParam.classLoader);
-
+                XposedBridge.log("className"+className);
 
                 for (Method method: clazz.getDeclaredMethods()) {
                     if (!Modifier.isAbstract(method.getModifiers())) {
@@ -76,5 +74,24 @@ public class PackageHooker {
                 && !className.contains("$")
                 && !className.contains("BuildConfig")
                 && !className.equals(loadPackageParam.packageName + ".R");
+    }
+    private void dumpClass(Class actions) {
+        XposedBridge.log("Dump class " + actions.getName());
+
+        XposedBridge.log("Methods");
+        Method[] m = actions.getDeclaredMethods();
+        for (int i = 0; i < m.length; i++) {
+            XposedBridge.log(m[i].toString());
+        }
+        XposedBridge.log("Fields");
+        Field[] f = actions.getDeclaredFields();
+        for (int j = 0; j < f.length; j++) {
+            XposedBridge.log(f[j].toString());
+        }
+        XposedBridge.log("Classes");
+        Class[] c = actions.getDeclaredClasses();
+        for (int k = 0; k < c.length; k++) {
+            XposedBridge.log(c[k].toString());
+        }
     }
 }

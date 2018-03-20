@@ -1,14 +1,8 @@
-package com.xyoye.danmuxposed.xposed;
-
-/**
- * Created by xyy on 2018-03-16 下午 3:52
- */
-
+package com.xyoye.danmuxposed;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.net.Uri;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.xyoye.danmuxposed.listener.PlayListener;
 
@@ -21,24 +15,15 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
 /**
- * @author DX
- * 注意：该类不要自己写构造方法，否者可能会hook不成功
- * 开发Xposed模块完成以后，建议修改xposed_init文件，并将起指向这个类,以提升性能
- * 所以这个类需要implements IXposedHookLoadPackage,以防修改xposed_init文件后忘记
- * Created by DX on 2017/10/4.
+ * Created by xyy on 2018-03-16 上午 10:59
  */
 
-public class HookLogic implements IXposedHookLoadPackage {
+public class MainXposed implements IXposedHookLoadPackage {
     private PlayListener listener;
 
-    public HookLogic(){
-
-    }
-
-    public HookLogic(PlayListener listener){
+    public MainXposed(PlayListener listener){
         this.listener = listener;
     }
-
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable {
         XposedBridge.log("DanmuXposed start...");

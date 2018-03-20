@@ -69,7 +69,7 @@ public class DanmuService extends Service {
         wmParams = new WindowManager.LayoutParams();
         wmParams.width = LayoutParams.WRAP_CONTENT;
         wmParams.height = LayoutParams.WRAP_CONTENT;
-        wmParams.type = LayoutParams.TYPE_PHONE;
+        wmParams.type = LayoutParams.TYPE_TOAST;
         wmParams.format = PixelFormat.RGBA_8888;
         wmParams.flags = LayoutParams.FLAG_NOT_FOCUSABLE;
         wmParams.gravity = Gravity.CENTER | Gravity.RIGHT;

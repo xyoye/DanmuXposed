@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">DanmuXposed</string>
-    <string name="btn">启动悬浮窗口</string>
-    <string name="floating">悬浮窗口</string>
-    <string name="stop">移除悬浮窗口</string>
+    <string name="main_title">弹幕播放器</string>
+    <string name="danmuSwitchText">启动弹幕</string>
 </resources>
