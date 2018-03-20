@@ -40,7 +40,6 @@ public class HookLoader implements IXposedHookLoadPackage {
     static {
         // TODO: Add the package name of application your want to hook!
         hostAppPackages.add("com.mxtech.videoplayer.pro");
-        hostAppPackages.add("com.example.administrator.testxposed");
     }
 
     /**

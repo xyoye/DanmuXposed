@@ -15,7 +15,9 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import com.xyoye.danmuxposed.listener.MXListener;
 import com.xyoye.danmuxposed.utils.BiliDanmukuParser;
+import com.xyoye.danmuxposed.xposed.HookLogic;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -33,7 +35,7 @@ import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
 import master.flame.danmaku.ui.widget.DanmakuView;
 
-public class DanmuService extends Service {
+public class DanmuService extends Service implements MXListener{
 
     RelativeLayout mFloatLayout;
     WindowManager.LayoutParams wmParams;
@@ -209,4 +211,38 @@ public class DanmuService extends Service {
         }
     }
 
+    @Override
+    public void appStart() {
+
+    }
+
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void duration(int duration) {
+
+    }
+
+    @Override
+    public void seekTo(int to) {
+
+    }
+
+    @Override
+    public void setSpeed(int speed) {
+
+    }
+
+    @Override
+    public void setTitle(String title) {
+
+    }
 }

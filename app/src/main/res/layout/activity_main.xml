@@ -13,22 +13,6 @@
         android:textColor="#FFFFFF"
         android:text="@string/main_title"/>
 
-    <ImageView
-        android:id="@+id/iv_add_folder"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="12dp"/>
-
-    <ImageView
-        android:id="@+id/iv_about_display"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="35dp"
-        android:layout_marginStart="5dp"/>
-
     <Button
         android:id="@+id/float_view_controller"
         android:layout_width="match_parent"

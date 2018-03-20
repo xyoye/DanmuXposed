@@ -10,7 +10,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import static com.xyoye.danmuxposed.utils.Config.MX_START;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private static final int READ_EXTERNAL_STORAGE = 101;
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         danmuSwitch = findViewById(R.id.float_view_controller);
+
         danmuSwitch.setOnClickListener(this);
 
         //申请权限
@@ -41,7 +45,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.float_view_controller:
-                floatViewSwitch();
+                Toast.makeText(MainActivity.this,String.valueOf(MX_START),Toast.LENGTH_LONG).show();
+                //floatViewSwitch();
                 break;
         }
     }

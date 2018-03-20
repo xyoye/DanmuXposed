@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">DanmuXposed</string>
     <string name="main_title">弹幕播放器</string>
-    <string name="danmuSwitchText">启动弹幕</string>
+    <string name="danmuSwitchText">启动监听</string>
 </resources>

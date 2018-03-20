@@ -5,7 +5,9 @@ package com.xyoye.danmuxposed.listener;
  */
 
 
-public interface PlayListener {
+public interface MXListener {
+    void appStart();
+
     void start();
 
     void pause();
