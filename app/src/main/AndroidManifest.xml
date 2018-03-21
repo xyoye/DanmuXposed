@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".DanmuService"/>
+        <service android:name=".service.BaseService"/>
+        <service android:name=".service.DanmuService"/>
 
         <meta-data
             android:name="xposedmodule"
