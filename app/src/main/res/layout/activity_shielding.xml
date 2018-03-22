@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <com.donkingliang.labels.LabelsView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/shielding_labels"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="70dp"
+        app:labelBackground="@drawable/shielding_bg"
+        app:labelTextColor="@drawable/shielding_font"
+        app:labelTextSize="14sp"
+        app:labelTextPaddingBottom="5dp"
+        app:labelTextPaddingLeft="10dp"
+        app:labelTextPaddingRight="10dp"
+        app:labelTextPaddingTop="5dp"
+        app:lineMargin="10dp"
+        app:wordMargin="10dp"
+        app:selectType="MULTI"
+        app:maxSelect="0" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:background="@drawable/shielding_input">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="90dp"
+                android:layout_alignParentBottom="true"
+                android:maxLines="2"
+                android:id="@+id/editText2" />
+
+            <Button
+                android:id="@+id/add_shielding"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/button_corner"
+                android:text="@string/add"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </ScrollView>
+
+
+</RelativeLayout>
