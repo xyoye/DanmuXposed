@@ -1,57 +1,120 @@
 package com.xyoye.danmuxposed;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.xyoye.danmuxposed.adapter.DrawerAdapter;
+import com.xyoye.danmuxposed.database.DatabaseDao;
+import com.xyoye.danmuxposed.database.SharedPreferencesHelper;
 import com.xyoye.danmuxposed.service.DanmuService;
+import com.xyoye.danmuxposed.utils.ToastUtil;
+import com.xyoye.danmuxposed.weight.AmountView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static com.xyoye.danmuxposed.utils.DanmuConfig.BUTTON_DANMU_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_FONT_SIZE_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_SPEED_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.MOBILE_DANMU_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.READ_FILE_PATH_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.READ_FILE_TYPE_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.READ_FOLDER_PATH_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.TOP_DANMU_KEY;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemClickListener{
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.title)
+    TextView title;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.drawer_list_view)
+    ListView drawerListView;
+
+    @BindView(R.id.layout1)
+    RelativeLayout layout1;
+    @BindView(R.id.danmu_switch)
+    Button danmuSwitch;
+    @BindView(R.id.mobile_danmu_iv)
+    ImageView mobileDanmuIv;
+    @BindView(R.id.button_danmu_iv)
+    ImageView buttonDanmuIv;
+    @BindView(R.id.top_danmu_iv)
+    ImageView topDanmuIv;
+    @BindView(R.id.default_font_size)
+    TextView defaultFontSize;
+    @BindView(R.id.default_speed)
+    TextView defaultSpeed;
+    @BindView(R.id.shielding_activity_bt)
+    Button shieldAcivityBt;
+    @BindView(R.id.danmu_setting_confirm)
+    Button danmuSettingConfirm;
+    @BindView(R.id.shield_number)
+    TextView shieldNumberTv;
+
+
+    @BindView(R.id.layout2)
+    RelativeLayout layout2;
+    @BindView(R.id.danmu_speed_input)
+    AmountView danmuSpeedInput;
+    @BindView(R.id.font_size_input)
+    AmountView fontSizeInput;
+    @BindView(R.id.layout3)
+    RelativeLayout layout3;
+
+    SharedPreferencesHelper preferencesHelper;
+    DatabaseDao databaseDao;
+
     private static final int READ_EXTERNAL_STORAGE = 101;
     private boolean readFilePermission = false;
     private boolean danmuStart = false;
     private List<String> drawerText;
     private List<Integer> drawerImage;
+    private boolean waitExit = true;
+    private int displayLayout;
 
-    private Button danmuSwitch;
-    private Toolbar toolbar;
-    private TextView title;
-    private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    private ListView drawerListView;
     private DrawerAdapter drawerAdapter;
-
-    private RelativeLayout layout1;
-    private RelativeLayout layout2;
-    private RelativeLayout layout3;
+    private float font_size;
+    private float danmu_speed;
+    private boolean mobile_danmu;
+    private boolean top_danmu;
+    private boolean button_danmu;
+    private int read_file_type;
+    private String read_file_path;
+    private String read_folder_path;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        SharedPreferencesHelper.init(this);
 
         initData();
 
@@ -63,6 +126,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initData(){
+        preferencesHelper = SharedPreferencesHelper.getInstance();
+        databaseDao = new DatabaseDao(this);
+
         drawerText = new ArrayList<>();
         drawerImage = new ArrayList<>();
         drawerText.add("主界面");
@@ -74,17 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView(){
-        layout1 = findViewById(R.id.layout1);
-        layout2 = findViewById(R.id.layout2);
-        layout3 = findViewById(R.id.layout3);
-
-        mDrawerLayout =  findViewById(R.id.drawer_layout);
-        toolbar = findViewById(R.id.toolbar);
-        title = findViewById(R.id.title);
-        danmuSwitch = findViewById(R.id.danmu_switch);
-        drawerListView =  findViewById(R.id.drawer_list_view);
-
-        title.setText("弹幕播放器");
+        title.setText(getResources().getString(R.string.main_title));
         setSupportActionBar(toolbar);
         ActionBar actionBar =  getSupportActionBar();
         if(actionBar != null) {
@@ -95,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open, R.string.close) {
             @Override
             public void onDrawerOpened(View drawerView) {
+                loseEtFocus();
                 super.onDrawerOpened(drawerView);
             }
             @Override
@@ -103,15 +160,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
         mDrawerToggle.syncState();
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
 
         drawerAdapter = new DrawerAdapter(drawerText,drawerImage,this);
         drawerListView.setAdapter(drawerAdapter);
     }
 
     private void initListener(){
-        danmuSwitch.setOnClickListener(this);
         drawerListView.setOnItemClickListener(this);
+
+        danmuSwitch.setOnClickListener(this);
+
+        defaultFontSize.setOnClickListener(this);
+        defaultSpeed.setOnClickListener(this);
+        shieldAcivityBt.setOnClickListener(this);
+        danmuSettingConfirm.setOnClickListener(this);
+        mobileDanmuIv.setOnClickListener(this);
+        buttonDanmuIv.setOnClickListener(this);
+        topDanmuIv.setOnClickListener(this);
     }
 
     private void initOther(){
@@ -123,25 +189,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if(id == android.R.id.home)
-        {
-            mDrawerLayout.openDrawer(GravityCompat.START);//打开侧滑菜单
-            return true ;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.danmu_switch:
-                //floatViewSwitch();
+                floatViewSwitch();
+                break;
+            case R.id.default_font_size:
+                fontSizeInput.setValue(1.0f);
+                preferencesHelper.saveString(DANMU_FONT_SIZE_KEY,"1.0");
+                break;
+            case R.id.default_speed:
+                danmuSpeedInput.setValue(1.0f);
+                preferencesHelper.saveString(DANMU_SPEED_KEY,"1.0");
+                break;
+            case R.id.shielding_activity_bt:
                 Intent intent = new Intent(MainActivity.this,ShieldingActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.danmu_setting_confirm:
+                preferencesHelper.saveString(DANMU_FONT_SIZE_KEY,String.valueOf(fontSizeInput.getValue()));
+                preferencesHelper.saveString(DANMU_SPEED_KEY,String.valueOf(danmuSpeedInput.getValue()));
+                preferencesHelper.saveBoolean(MOBILE_DANMU_KEY,mobile_danmu);
+                preferencesHelper.saveBoolean(BUTTON_DANMU_KEY,button_danmu);
+                preferencesHelper.saveBoolean(TOP_DANMU_KEY,top_danmu);
+                ToastUtil.showToast(MainActivity.this,"保存成功！");
+                loseEtFocus();
+                break;
+            case R.id.mobile_danmu_iv:
+                mobile_danmu = !mobile_danmu;
+                int resId = mobile_danmu ? R.drawable.moblie_danmu_checked : R.drawable.moblie_danmu_unchecked;
+                mobileDanmuIv.setImageResource(resId);
+                break;
+            case R.id.button_danmu_iv:
+                button_danmu = !button_danmu;
+                resId = button_danmu ? R.drawable.botton_danmu_checked : R.drawable.moblie_danmu_unchecked;
+                buttonDanmuIv.setImageResource(resId);
+                break;
+            case R.id.top_danmu_iv:
+                top_danmu = !top_danmu;
+                resId = top_danmu ? R.drawable.top_danmu_checked : R.drawable.top_danmu_unchecked;
+                topDanmuIv.setImageResource(resId);
                 break;
         }
     }
@@ -167,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 readFilePermission = true;
             }else {
-                Toast.makeText(MainActivity.this,"读取弹幕文件权限被拒绝",Toast.LENGTH_LONG).show();
+                ToastUtil.showToast(MainActivity.this,"读取弹幕文件权限被拒绝");
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -182,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 layout2.setVisibility(View.GONE);
                 layout3.setVisibility(View.GONE);
                 mDrawerLayout.closeDrawers();
+                initLayout(0);
                 break;
             case 1:
                 title.setText("弹幕设置");
@@ -189,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 layout2.setVisibility(View.VISIBLE);
                 layout3.setVisibility(View.GONE);
                 mDrawerLayout.closeDrawers();
+                initLayout(1);
                 break;
             case 2:
                 title.setText("路径设置");
@@ -196,7 +285,87 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 layout2.setVisibility(View.GONE);
                 layout3.setVisibility(View.VISIBLE);
                 mDrawerLayout.closeDrawers();
+                initLayout(2);
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (waitExit) {
+            waitExit = false;
+            ToastUtil.showToast(MainActivity.this,getString(R.string.press_to_exit));
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    waitExit = true;
+                }
+            }, 2000);
+        } else {
+            finish();
+            System.exit(0);
+        }
+    }
+
+    private boolean checkOutSave(){
+        switch (displayLayout){
+            case 1:
+
+                break;
+            case 2:
+                break;
+        }
+        return true;
+    }
+
+    private void initLayout(int layoutN){
+        if (!checkOutSave()){
+            ToastUtil.showToast(MainActivity.this,"有数据未保存");
+        }
+        displayLayout = layoutN;
+        switch (displayLayout){
+            case 0:
+                break;
+            case 1:
+                font_size = Float.parseFloat(preferencesHelper.getString(DANMU_FONT_SIZE_KEY,"1.0"));
+                danmu_speed = Float.parseFloat(preferencesHelper.getString(DANMU_SPEED_KEY,"1.0"));
+                mobile_danmu = preferencesHelper.getBoolean(MOBILE_DANMU_KEY,false);
+                top_danmu = preferencesHelper.getBoolean(TOP_DANMU_KEY,false);
+                button_danmu = preferencesHelper.getBoolean(BUTTON_DANMU_KEY,false);
+                read_file_type = preferencesHelper.getInteger(READ_FILE_TYPE_KEY,0);
+                read_file_path = preferencesHelper.getString(READ_FILE_PATH_KEY,"");
+                read_folder_path = preferencesHelper.getString(READ_FOLDER_PATH_KEY,"");
+
+                fontSizeInput.setValue(font_size);
+                danmuSpeedInput.setValue(danmu_speed);
+                int resId = mobile_danmu ? R.drawable.moblie_danmu_checked : R.drawable.moblie_danmu_unchecked;
+                mobileDanmuIv.setImageResource(resId);
+                resId = button_danmu ? R.drawable.botton_danmu_checked : R.drawable.moblie_danmu_unchecked;
+                buttonDanmuIv.setImageResource(resId);
+                resId = top_danmu ? R.drawable.top_danmu_checked : R.drawable.top_danmu_unchecked;
+                topDanmuIv.setImageResource(resId);
+                String shieldN = databaseDao.queryAllShield().size()+"";
+                shieldNumberTv.setText(shieldN);
+                break;
+            case 2:
+                break;
+        }
+    }
+
+    private void loseEtFocus(){
+        View view = MainActivity.this.getCurrentFocus();
+        if (view != null){
+            view.clearFocus();
+            InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            assert manager != null;
+            manager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String shieldN = databaseDao.queryAllShield().size()+"";
+        shieldNumberTv.setText(shieldN);
     }
 }

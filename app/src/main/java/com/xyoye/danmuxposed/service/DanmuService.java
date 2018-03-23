@@ -1,29 +1,15 @@
 package com.xyoye.danmuxposed.service;
 
 import android.annotation.SuppressLint;
-import android.app.Service;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.PixelFormat;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 
 import com.xyoye.danmuxposed.R;
 import com.xyoye.danmuxposed.bean.Event;
-import com.xyoye.danmuxposed.receiver.EventBroadcast;
+import com.xyoye.danmuxposed.database.SharedPreferencesHelper;
 import com.xyoye.danmuxposed.utils.BiliDanmukuParser;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -42,11 +28,12 @@ import master.flame.danmaku.danmaku.model.android.Danmakus;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
 
-import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_FONT_SIZE;
-import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_SPEED;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_FONT_SIZE_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_SPEED_KEY;
 
 public class DanmuService extends BaseService {
     private DanmakuContext mDanmukuContext;
+    private SharedPreferencesHelper preferencesHelper;
 
     Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -63,6 +50,8 @@ public class DanmuService extends BaseService {
     @Override
     public void onCreate(){
         super.onCreate();
+        preferencesHelper = SharedPreferencesHelper.getInstance();
+
         initDanmuView();
     }
 
@@ -71,6 +60,9 @@ public class DanmuService extends BaseService {
      */
     @SuppressLint("UseSparseArrays")
     private void initDanmuView(){
+        //速度
+        float speed = Float.parseFloat(preferencesHelper.getString(DANMU_SPEED_KEY,"1.0"));
+        float font_size = Float.parseFloat(preferencesHelper.getString(DANMU_FONT_SIZE_KEY,"1.0"));
         // 设置最大显示行数
         HashMap<Integer, Integer> maxLinesPair = new HashMap<>();
         // 设置是否禁止重叠
@@ -82,8 +74,8 @@ public class DanmuService extends BaseService {
         mDanmukuContext = DanmakuContext.create();
         mDanmukuContext.setDanmakuStyle(IDisplayer.DANMAKU_STYLE_STROKEN, 3)
                 .setDuplicateMergingEnabled(false)
-                .setScrollSpeedFactor(DANMU_SPEED)
-                .setScaleTextSize(DANMU_FONT_SIZE)
+                .setScrollSpeedFactor(speed)
+                .setScaleTextSize(font_size)
                 .setMaximumLines(maxLinesPair)
                 .preventOverlapping(overlappingEnablePair);
         if (mDanmuView != null) {

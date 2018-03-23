@@ -5,7 +5,7 @@
     <string name="danmuSwitchText">启动监听</string>
     <string name="open">打开</string>
     <string name="close">关闭</string>
-    <string name="default_value">1.0</string>
+    <string name="default_value">1</string>
     <string name="restore_default">恢复默认</string>
     <string name="danmu_speed">弹幕速度</string>
     <string name="shielding_type">屏蔽类型</string>
@@ -23,4 +23,8 @@
     <string name="select_folder">选择文件夹</string>
     <string name="route">路径</string>
     <string name="change">更换</string>
+    <string name="press_to_exit">再按一次退出</string>
+    <string name="delete">删除</string>
+    <string name="reduce_symbol">-</string>
+    <string name="add_symbol">+</string>
 </resources>
