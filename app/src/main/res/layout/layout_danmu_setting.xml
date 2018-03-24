@@ -32,7 +32,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/font_size"/>
+                android:src="@mipmap/font_size"/>
 
             <com.xyoye.danmuxposed.weight.AmountView
                 android:id="@+id/font_size_input"
@@ -80,7 +80,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/speed"/>
+                android:src="@mipmap/speed"/>
 
             <com.xyoye.danmuxposed.weight.AmountView
                 android:id="@+id/danmu_speed_input"
@@ -133,7 +133,7 @@
                     android:id="@+id/mobile_danmu_iv"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:src="@drawable/moblie_danmu_unchecked"/>
+                    android:src="@mipmap/moblie_danmu_unchecked"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
                     android:id="@+id/button_danmu_iv"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:src="@drawable/bottom_danmu_unchecked"/>
+                    android:src="@mipmap/bottom_danmu_unchecked"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
                     android:id="@+id/top_danmu_iv"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:src="@drawable/top_danmu_unchecked"/>
+                    android:src="@mipmap/top_danmu_unchecked"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

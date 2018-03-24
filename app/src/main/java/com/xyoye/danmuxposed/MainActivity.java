@@ -1,6 +1,7 @@
 package com.xyoye.danmuxposed;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -163,9 +164,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawerText.add("主界面");
         drawerText.add("弹幕设置");
         drawerText.add("路径设置");
-        drawerImage.add(R.drawable.home);
-        drawerImage.add(R.drawable.danmu);
-        drawerImage.add(R.drawable.file);
+        drawerImage.add(R.mipmap.home);
+        drawerImage.add(R.mipmap.danmu);
+        drawerImage.add(R.mipmap.file);
     }
 
     private void initView(){
@@ -193,6 +194,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         DrawerAdapter drawerAdapter = new DrawerAdapter(drawerText,drawerImage,this);
         drawerListView.setAdapter(drawerAdapter);
+
+        danmuSwitch.setText("启动监听" );
+        danmuStart = false;
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if ("com.xyoye.danmuxposed.service.DanmuService".equals(service.service.getClassName())) {
+                danmuSwitch.setText("关闭监听" );
+                danmuStart = true;
+            }
+        }
     }
 
     private void initListener(){
@@ -272,17 +283,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.mobile_danmu_iv:
                 mobile_danmu = !mobile_danmu;
-                int resId = mobile_danmu ? R.drawable.moblie_danmu_checked : R.drawable.moblie_danmu_unchecked;
+                int resId = mobile_danmu ? R.mipmap.moblie_danmu_checked : R.mipmap.moblie_danmu_unchecked;
                 mobileDanmuIv.setImageResource(resId);
                 break;
             case R.id.button_danmu_iv:
                 button_danmu = !button_danmu;
-                resId = button_danmu ? R.drawable.bottom_danmu_checked : R.drawable.bottom_danmu_unchecked;
+                resId = button_danmu ? R.mipmap.bottom_danmu_checked : R.mipmap.bottom_danmu_unchecked;
                 buttonDanmuIv.setImageResource(resId);
                 break;
             case R.id.top_danmu_iv:
                 top_danmu = !top_danmu;
-                resId = top_danmu ? R.drawable.top_danmu_checked : R.drawable.top_danmu_unchecked;
+                resId = top_danmu ? R.mipmap.top_danmu_checked : R.mipmap.top_danmu_unchecked;
                 topDanmuIv.setImageResource(resId);
                 break;
             case R.id.shielding_activity_bt:
@@ -358,7 +369,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 stopService(intent);
                 danmuSwitch.setText("启动监听");
             }
-            preferencesHelper.saveBoolean(DANMU_SERVICE_START,danmuStart);
         }else {
             ToastUtil.showToast(MainActivity.this,"请打开DanmuXposed读取文件权限");
         }
@@ -413,11 +423,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 fontSizeInput.setValue(font_size);
                 danmuSpeedInput.setValue(danmu_speed);
-                int resId = mobile_danmu ? R.drawable.moblie_danmu_checked : R.drawable.moblie_danmu_unchecked;
+                int resId = mobile_danmu ? R.mipmap.moblie_danmu_checked : R.mipmap.moblie_danmu_unchecked;
                 mobileDanmuIv.setImageResource(resId);
-                resId = button_danmu ? R.drawable.bottom_danmu_checked : R.drawable.bottom_danmu_unchecked;
+                resId = button_danmu ? R.mipmap.bottom_danmu_checked : R.mipmap.bottom_danmu_unchecked;
                 buttonDanmuIv.setImageResource(resId);
-                resId = top_danmu ? R.drawable.top_danmu_checked : R.drawable.top_danmu_unchecked;
+                resId = top_danmu ? R.mipmap.top_danmu_checked : R.mipmap.top_danmu_unchecked;
                 topDanmuIv.setImageResource(resId);
                 String shieldN = databaseDao.queryAllShield().size()+"";
                 shieldNumberTv.setText(shieldN);
@@ -549,10 +559,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         String shieldN = databaseDao.queryAllShield().size()+"";
         shieldNumberTv.setText(shieldN);
-        danmuStart = preferencesHelper.getBoolean(DANMU_SERVICE_START,false);
-        String btText = danmuStart ? "关闭监听" : "启动监听";
-        danmuSwitch.setText(btText);
-
     }
 
     @Override

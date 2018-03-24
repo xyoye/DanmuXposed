@@ -109,11 +109,7 @@ public abstract class BaseService extends Service {
                     mWindowManager.updateViewLayout(mLayout, wmParams);
                     viewCloseBt.setText("关闭");
                     view_close = true;
-                    if (mDanmuView.isShown()){
-                        startDanmu();
-                    }else {
-                        mDanmuView.resume();
-                    }
+                    mDanmuView.resume();
                     mDanmuView.show();
                 }
 
@@ -138,6 +134,4 @@ public abstract class BaseService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
-
-    public abstract void startDanmu();
 }

@@ -9,6 +9,7 @@ import com.xyoye.danmuxposed.R;
 import com.xyoye.danmuxposed.bean.Event;
 import com.xyoye.danmuxposed.database.SharedPreferencesHelper;
 import com.xyoye.danmuxposed.utils.BiliDanmukuParser;
+import com.xyoye.danmuxposed.utils.FileUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -17,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 
 import master.flame.danmaku.danmaku.loader.ILoader;
 import master.flame.danmaku.danmaku.loader.android.DanmakuLoaderFactory;
@@ -29,18 +31,25 @@ import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
 
 import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_FONT_SIZE_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_SERVICE_START;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_SPEED_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.READ_FILE_TYPE_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.READ_FOLDER_PATH_KEY;
 
 public class DanmuService extends BaseService {
     private DanmakuContext mDanmukuContext;
     private SharedPreferencesHelper preferencesHelper;
+    private String title;
+    private int duration;
+    private int progress;
+    private int speed;
 
     Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
             switch (msg.what){
                 case 101:
-                    viewCloseBt.setText("更改");
+                    viewCloseBt.setText("开启");
                     break;
             }
             return false;
@@ -108,14 +117,23 @@ public class DanmuService extends BaseService {
         }
     }
 
-    @Override
     public void startDanmu(){
         try {
-            String DANMU_PATH = "/storage/9016-4EF8/其它/刀剑神域01.xml";
-            mDanmuView.release();
-            FileInputStream danmu = new FileInputStream(DANMU_PATH);
-            BaseDanmakuParser mParser = createParser(danmu);
-            mDanmuView.prepare(mParser, mDanmukuContext);
+            int read_file_type = preferencesHelper.getInteger(READ_FILE_TYPE_KEY,1);
+            if (read_file_type == 1){
+                String read_folder_path = preferencesHelper.getString(READ_FOLDER_PATH_KEY,"");
+                if ("".equals(read_folder_path))return;
+                List<String> fileList = FileUtil.getAllFile(read_folder_path,false);
+                for (int i = 0; i < fileList.size(); i++) {
+                    String fileStr = fileList.get(i);
+                    if (fileStr.contains(FileUtil.getFileName(title)+".xml")){
+                        mDanmuView.release();
+                        FileInputStream danmu = new FileInputStream(fileStr);
+                        BaseDanmakuParser mParser = createParser(danmu);
+                        mDanmuView.prepare(mParser, mDanmukuContext);
+                    }
+                }
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -133,21 +151,27 @@ public class DanmuService extends BaseService {
                 break;
             case Event.EVENT_START:
                 System.out.println("video start");
+                startDanmu();
                 break;
             case Event.EVENT_PAUSE:
                 System.out.println("video pause");
+                mDanmuView.pause();
                 break;
             case Event.EVENT_SPEED:
                 System.out.println("video speed："+(int)event.getValue());
+                speed = (int)event.getValue();
                 break;
             case Event.EVENT_DURATION:
                 System.out.println("video duration："+(int)event.getValue());
+                duration = (int)event.getValue();
                 break;
             case Event.EVENT_PROGRESS:
                 System.out.println("video progress："+(int)event.getValue());
+                progress = (int)event.getValue();
                 break;
             case Event.EVENT_TITLE:
                 System.out.println("video title："+event.getValue());
+                title = (String)event.getValue();
                 break;
         }
     }
