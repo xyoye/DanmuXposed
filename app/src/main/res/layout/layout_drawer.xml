@@ -11,7 +11,7 @@
     <include layout="@layout/layout_danmu_setting"/>
 
     <!--布局3-->
-    <include layout="@layout/layout_route_setting"/>
+    <include layout="@layout/layout_path_setting"/>
 
     <!--侧滑菜单-->
     <LinearLayout

@@ -1,4 +1,4 @@
-package com.xyoye.danmuxposed;
+package com.xyoye.danmuxposed.ui;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.donkingliang.labels.LabelsView;
+import com.xyoye.danmuxposed.R;
 import com.xyoye.danmuxposed.database.DatabaseDao;
 import com.xyoye.danmuxposed.weight.SubmitButton;
 
@@ -79,7 +80,7 @@ public class ShieldingActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_shield, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

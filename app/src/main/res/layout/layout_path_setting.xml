@@ -20,12 +20,14 @@
             android:text="@string/read_file_type"/>
 
        <RadioGroup
+           android:id="@+id/read_type_group"
            android:layout_width="match_parent"
            android:layout_height="50dp"
            android:layout_marginTop="5dp"
            android:gravity="center_vertical"
            android:orientation="horizontal">
            <RadioButton
+               android:id="@+id/read_file_radio"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:gravity="center_vertical"/>
@@ -33,9 +35,11 @@
            <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
+               android:textSize="16sp"
                android:text="@string/read_for_file"/>
 
            <RadioButton
+               android:id="@+id/read_folder_radio"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_marginStart="20dp"
@@ -44,6 +48,7 @@
            <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
+               android:textSize="16sp"
                android:text="@string/read_for_folder"/>
        </RadioGroup>
 
@@ -66,14 +71,17 @@
             android:layout_marginTop="5dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/file_path_tv"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:textSize="16sp"
-                android:text="../../file.xml" />
+                android:singleLine="true"
+                android:ellipsize="start"
+                android:textSize="16sp"/>
 
             <TextView
+                android:id="@+id/change_file_path"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -103,14 +111,17 @@
             android:layout_marginTop="5dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/folder_path_tv"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:textSize="16sp"
-                android:text="../../file.xml" />
+                android:singleLine="true"
+                android:ellipsize="start"
+                android:textSize="16sp"/>
 
             <TextView
+                android:id="@+id/change_folder_path"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -124,7 +135,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/route_setting_update"
+        android:id="@+id/path_setting_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

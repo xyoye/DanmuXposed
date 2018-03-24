@@ -27,4 +27,6 @@
     <string name="delete">删除</string>
     <string name="reduce_symbol">-</string>
     <string name="add_symbol">+</string>
+    <string name="localNetwork">局域网</string>
+    <string name="select">选择</string>
 </resources>

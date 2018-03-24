@@ -3,6 +3,8 @@
     package="com.xyoye.danmuxposed">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -19,7 +21,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ShieldingActivity"/>
+        <activity android:name=".ui.ShieldingActivity"/>
+
+        <activity android:name=".ui.FolderChooserActivity"/>
+
+        <activity android:name=".ui.SmbActivity"/>
 
         <service android:name=".service.DanmuService"/>
 
