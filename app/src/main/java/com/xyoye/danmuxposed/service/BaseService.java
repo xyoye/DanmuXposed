@@ -7,8 +7,11 @@ import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -28,7 +31,7 @@ import master.flame.danmaku.ui.widget.DanmakuView;
 
 
 public abstract class BaseService extends Service {
-    boolean view_close = false;
+    boolean view_close = true;
     RelativeLayout mLayout;
     WindowManager.LayoutParams wmParams;
     WindowManager mWindowManager;
@@ -78,7 +81,7 @@ public abstract class BaseService extends Service {
         wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
         wmParams.type = WindowManager.LayoutParams.TYPE_TOAST;
         wmParams.format = PixelFormat.RGBA_8888;
-        wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN   ;
+        wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
         wmParams.gravity = Gravity.CENTER | Gravity.RIGHT;
         mWindowManager.addView(mLayout, wmParams);
         mLayout.measure(View.MeasureSpec.makeMeasureSpec(0,
@@ -98,6 +101,8 @@ public abstract class BaseService extends Service {
                     wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
                     mWindowManager.updateViewLayout(mLayout, wmParams);
                     viewCloseBt.setText("开启");
+                    viewCloseBt.setAlpha(1.0f);
+                    viewCloseBt.setBackgroundResource(R.drawable.btn_circular_blue);
                     view_close = false;
                     mDanmuView.hide();
                 }else {
@@ -106,6 +111,8 @@ public abstract class BaseService extends Service {
                     wmParams.height = WindowManager.LayoutParams.MATCH_PARENT;
                     mWindowManager.updateViewLayout(mLayout, wmParams);
                     viewCloseBt.setText("关闭");
+                    viewCloseBt.setAlpha(0.1f);
+                    viewCloseBt.setBackgroundResource(R.drawable.btn_circular_white);
                     view_close = true;
                     mDanmuView.show();
                 }

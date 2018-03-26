@@ -17,11 +17,12 @@
 
     <Button
         android:id="@+id/danmu_view_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
+        android:background="@drawable/btn_circular_blue"
         android:textColor="@android:color/white"
-        android:text="开启"/>
+        android:text="@string/open"/>
     
 </RelativeLayout>

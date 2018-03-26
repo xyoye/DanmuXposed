@@ -3,7 +3,7 @@
     <string name="main_title">弹幕播放器</string>
     <string name="font_size">字体大小</string>
     <string name="danmuSwitchText">启动监听</string>
-    <string name="open">打开</string>
+    <string name="open">开启</string>
     <string name="close">关闭</string>
     <string name="default_value">1</string>
     <string name="restore_default">恢复默认</string>
