@@ -1,6 +1,7 @@
 package com.xyoye.danmuxposed;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,6 +39,7 @@ import com.xyoye.danmuxposed.ui.FolderChooserActivity;
 import com.xyoye.danmuxposed.ui.ShieldingActivity;
 import com.xyoye.danmuxposed.utils.ToastUtil;
 import com.xyoye.danmuxposed.weight.AmountView;
+import com.xyoye.danmuxposed.weight.SubmitButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -165,9 +167,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawerText.add("主界面");
         drawerText.add("弹幕设置");
         drawerText.add("路径设置");
+        drawerText.add("清除数据");
+        drawerText.add("");
+        drawerText.add("使用介绍");
+        drawerText.add("关于");
         drawerImage.add(R.mipmap.home);
         drawerImage.add(R.mipmap.danmu);
         drawerImage.add(R.mipmap.file);
+        drawerImage.add(R.mipmap.deleteimage);
+        drawerImage.add(0);
+        drawerImage.add(R.mipmap.help);
+        drawerImage.add(R.mipmap.about);
     }
 
     private void initView(){
@@ -328,6 +338,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 2:
                 checkOutSave(2);
+                break;
+            case 3:
+                deleteData();
                 break;
         }
     }
@@ -538,6 +551,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             assert manager != null;
             manager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
+    }
+
+    private void deleteData(){
+        final AlertDialog.Builder builder_delete = new AlertDialog.Builder(MainActivity.this);
+        View dialogView = View.inflate(MainActivity.this,R.layout.dialog_delete,null);
+        final TextView deleteTv = dialogView.findViewById(R.id.delete_tv);
+        final SubmitButton deleteBt = dialogView.findViewById(R.id.delete_bt);
+        String tip = "确认删除所有数据？";
+        deleteTv.setText(tip);
+        deleteBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseDao.deleteAllShield();
+                databaseDao.deleteAll();
+                deleteTv.setText("数据已清空");
+                deleteBt.doResult(true);
+            }
+        });
+        builder_delete.setView(dialogView);
+        builder_delete.show();
     }
 
     @Override

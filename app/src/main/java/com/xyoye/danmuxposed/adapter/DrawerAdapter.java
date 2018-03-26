@@ -54,9 +54,12 @@ public class DrawerAdapter extends BaseAdapter {
         ImageView imageView = view.findViewById(R.id.image);
         TextView textView = view.findViewById(R.id.text);
 
-        if(image.size() >position)
+        if(image.size() > position)
             imageView.setImageResource(image.get(position));
         textView.setText(text.get(position));
+
+        if (image.get(position) == 0)
+            view.setVisibility(View.INVISIBLE);
 
         return view;
     }

@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DanmakuFlameMaster/DanmakuFlameMaster.iml" filepath="$PROJECT_DIR$/DanmakuFlameMaster/DanmakuFlameMaster.iml" />
-      <module fileurl="file://D:\Android\DanmuXposed\DanmakuFlameMaster\DanmakuFlameMaster.iml" filepath="D:\Android\DanmuXposed\DanmakuFlameMaster\DanmakuFlameMaster.iml" />
       <module fileurl="file://$PROJECT_DIR$/DanmuXposed.iml" filepath="$PROJECT_DIR$/DanmuXposed.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/ndkbitmap-armv5/ndkbitmap-armv5.iml" filepath="$PROJECT_DIR$/ndkbitmap-armv5/ndkbitmap-armv5.iml" />

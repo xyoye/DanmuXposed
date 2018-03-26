@@ -61,7 +61,7 @@ public class DatabaseDao {
 
     public void deleteAll(){
         SQLiteDatabase db = helper.getReadableDatabase();
-        String sql = "truncate table danmu";
+        String sql = "DELETE FROM danmu";
         db.execSQL(sql);
         db.close();
     }
@@ -88,7 +88,7 @@ public class DatabaseDao {
 
     public void deleteAllShield(){
         SQLiteDatabase db = shieldHelper.getReadableDatabase();
-        String sql = "truncate table shielding";
+        String sql = "DELETE FROM shielding";
         db.execSQL(sql);
         db.close();
     }

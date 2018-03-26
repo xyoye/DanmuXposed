@@ -24,12 +24,15 @@ import master.flame.danmaku.danmaku.model.DanmakuTimer;
 import master.flame.danmaku.danmaku.model.IDisplayer;
 import master.flame.danmaku.danmaku.model.android.DanmakuContext;
 
+import static com.xyoye.danmuxposed.utils.DanmuConfig.BUTTON_DANMU_KEY;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_FONT_SIZE_KEY;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_SPEED_KEY;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.FOLDER;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.MOBILE_DANMU_KEY;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.READ_FILE_PATH_KEY;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.READ_FILE_TYPE_KEY;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.READ_FOLDER_PATH_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.TOP_DANMU_KEY;
 
 public class DanmuService extends BaseService {
     private DanmakuContext mDanmukuContext;
@@ -40,10 +43,13 @@ public class DanmuService extends BaseService {
     private DatabaseDao databaseDao;
     private float fontSize;
     private float danmuSpeed;
-    private List<String> shieldList;
     private int read_file_type;
-    private List<String> fileList;
     private String filePath;
+    private boolean mobileDanmu;
+    private boolean topDanmu;
+    private boolean buttonDanmu;
+    private List<String> shieldList;
+    private List<String> fileList;
 
     @Override
     public void onCreate(){
@@ -71,6 +77,10 @@ public class DanmuService extends BaseService {
         fontSize = Float.parseFloat(preferencesHelper.getString(DANMU_FONT_SIZE_KEY,"1.0"));
         danmuSpeed = Float.parseFloat(preferencesHelper.getString(DANMU_SPEED_KEY,"1.0"));
         shieldList = databaseDao.queryAllShield();
+
+        mobileDanmu = preferencesHelper.getBoolean(MOBILE_DANMU_KEY,true);
+        topDanmu = preferencesHelper.getBoolean(TOP_DANMU_KEY,true);
+        buttonDanmu = preferencesHelper.getBoolean(BUTTON_DANMU_KEY,true);
     }
 
     /**
@@ -94,6 +104,12 @@ public class DanmuService extends BaseService {
                 .setMaximumLines(maxLinesPair)
                 .preventOverlapping(overlappingEnablePair)
                 .setKeyWordBlackList(shieldList);
+        if (!mobileDanmu) {
+            mDanmukuContext.setR2LDanmakuVisibility(true);
+            mDanmukuContext.setL2RDanmakuVisibility(true);
+        }
+        if (!topDanmu) mDanmukuContext.setFBDanmakuVisibility(true);
+        if (!buttonDanmu) mDanmukuContext.setFTDanmakuVisibility(true);
         if (mDanmuView != null) {
             mDanmuView.setCallback(new master.flame.danmaku.controller.DrawHandler.Callback() {
                 @Override
