@@ -47,8 +47,9 @@ import butterknife.ButterKnife;
 
 import static com.xyoye.danmuxposed.utils.DanmuConfig.BUTTON_DANMU_KEY;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_FONT_SIZE_KEY;
-import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_SERVICE_START;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_SPEED_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.FILE;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.FOLDER;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.MOBILE_DANMU_KEY;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.READ_FILE_PATH_KEY;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.READ_FILE_TYPE_KEY;
@@ -198,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         danmuSwitch.setText("启动监听" );
         danmuStart = false;
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        assert manager != null;
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if ("com.xyoye.danmuxposed.service.DanmuService".equals(service.service.getClassName())) {
                 danmuSwitch.setText("关闭监听" );
@@ -240,14 +242,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
                     case R.id.read_file_radio:
-                        read_file_type = 0;
+                        read_file_type = FILE;
                         changeFilePathTv.setEnabled(true);
                         changeFolderPathTv.setEnabled(false);
                         changeFilePathTv.setTextColor(Color.parseColor("#33b5e5"));
                         changeFolderPathTv.setTextColor(Color.parseColor("#8a8a8a"));
                         break;
                     case R.id.read_folder_radio:
-                        read_file_type = 1;
+                        read_file_type = FOLDER;
                         changeFilePathTv.setEnabled(false);
                         changeFolderPathTv.setEnabled(true);
                         changeFilePathTv.setTextColor(Color.parseColor("#8a8a8a"));
@@ -439,13 +441,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mDrawerLayout.closeDrawers();
                 break;
             case 2:
-                read_file_type = preferencesHelper.getInteger(READ_FILE_TYPE_KEY,1);
+                read_file_type = preferencesHelper.getInteger(READ_FILE_TYPE_KEY,FOLDER);
                 read_file_path = preferencesHelper.getString(READ_FILE_PATH_KEY,"");
                 read_folder_path = preferencesHelper.getString(READ_FOLDER_PATH_KEY,defaultFolder);
 
                 folderPathTv.setText(read_folder_path);
                 filePathTv.setText(read_file_path);
-                if (read_file_type == 0){
+                if (read_file_type == FILE){
                     readFileRadio.setChecked(true);
                     changeFilePathTv.setEnabled(true);
                     changeFolderPathTv.setEnabled(false);
@@ -489,7 +491,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     changePage(layoutN);
                 break;
             case 2:
-                if(read_file_type != preferencesHelper.getInteger(READ_FILE_TYPE_KEY,1) ||
+                if(read_file_type != preferencesHelper.getInteger(READ_FILE_TYPE_KEY,FOLDER) ||
                         !preferencesHelper.getString(READ_FILE_PATH_KEY,"").equals(read_file_path) ||
                         !preferencesHelper.getString(READ_FOLDER_PATH_KEY,defaultFolder).equals(read_folder_path))
                 {

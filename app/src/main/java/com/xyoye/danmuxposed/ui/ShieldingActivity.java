@@ -107,7 +107,6 @@ public class ShieldingActivity extends AppCompatActivity implements View.OnClick
         View dialogView = View.inflate(ShieldingActivity.this,R.layout.dialog_delete,null);
         final TextView deleteTv = dialogView.findViewById(R.id.delete_tv);
         final SubmitButton deleteBt = dialogView.findViewById(R.id.delete_bt);
-
         final List<String> selectData = shieldingLabels.getSelectLabelDatas();
         String tip = "即将删除："+selectData.size()+"个屏蔽";
         deleteTv.setText(tip);

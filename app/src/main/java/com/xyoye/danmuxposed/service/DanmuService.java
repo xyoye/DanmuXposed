@@ -1,12 +1,11 @@
 package com.xyoye.danmuxposed.service;
 
 import android.annotation.SuppressLint;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 import com.xyoye.danmuxposed.R;
 import com.xyoye.danmuxposed.bean.Event;
+import com.xyoye.danmuxposed.database.DatabaseDao;
 import com.xyoye.danmuxposed.database.SharedPreferencesHelper;
 import com.xyoye.danmuxposed.utils.BiliDanmukuParser;
 import com.xyoye.danmuxposed.utils.FileUtil;
@@ -16,23 +15,19 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import master.flame.danmaku.danmaku.loader.ILoader;
-import master.flame.danmaku.danmaku.loader.android.DanmakuLoaderFactory;
 import master.flame.danmaku.danmaku.model.BaseDanmaku;
 import master.flame.danmaku.danmaku.model.DanmakuTimer;
 import master.flame.danmaku.danmaku.model.IDisplayer;
 import master.flame.danmaku.danmaku.model.android.DanmakuContext;
-import master.flame.danmaku.danmaku.model.android.Danmakus;
-import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
-import master.flame.danmaku.danmaku.parser.IDataSource;
 
 import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_FONT_SIZE_KEY;
-import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_SERVICE_START;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_SPEED_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.FOLDER;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.READ_FILE_PATH_KEY;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.READ_FILE_TYPE_KEY;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.READ_FOLDER_PATH_KEY;
 
@@ -40,28 +35,42 @@ public class DanmuService extends BaseService {
     private DanmakuContext mDanmukuContext;
     private SharedPreferencesHelper preferencesHelper;
     private String title;
-    private int duration;
     private int progress;
-    private int speed;
 
-    Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            switch (msg.what){
-                case 101:
-                    viewCloseBt.setText("开启");
-                    break;
-            }
-            return false;
-        }
-    });
+    private DatabaseDao databaseDao;
+    private float fontSize;
+    private float danmuSpeed;
+    private List<String> shieldList;
+    private int read_file_type;
+    private List<String> fileList;
+    private String filePath;
 
     @Override
     public void onCreate(){
         super.onCreate();
         preferencesHelper = SharedPreferencesHelper.getInstance();
 
+        initData();
+
         initDanmuView();
+    }
+
+    private void initData(){
+        read_file_type = preferencesHelper.getInteger(READ_FILE_TYPE_KEY,FOLDER);
+        if (read_file_type == FOLDER){
+            String read_folder_path = preferencesHelper.getString(READ_FOLDER_PATH_KEY,"");
+            fileList = new ArrayList<>();
+            if (!"".equals(read_folder_path)){
+                fileList = FileUtil.getAllFile(read_folder_path,false);
+            }
+        }else {
+            filePath = preferencesHelper.getString(READ_FILE_PATH_KEY,"");
+        }
+
+        databaseDao = new DatabaseDao(getApplicationContext());
+        fontSize = Float.parseFloat(preferencesHelper.getString(DANMU_FONT_SIZE_KEY,"1.0"));
+        danmuSpeed = Float.parseFloat(preferencesHelper.getString(DANMU_SPEED_KEY,"1.0"));
+        shieldList = databaseDao.queryAllShield();
     }
 
     /**
@@ -69,9 +78,6 @@ public class DanmuService extends BaseService {
      */
     @SuppressLint("UseSparseArrays")
     private void initDanmuView(){
-        //速度
-        float speed = Float.parseFloat(preferencesHelper.getString(DANMU_SPEED_KEY,"1.0"));
-        float font_size = Float.parseFloat(preferencesHelper.getString(DANMU_FONT_SIZE_KEY,"1.0"));
         // 设置最大显示行数
         HashMap<Integer, Integer> maxLinesPair = new HashMap<>();
         // 设置是否禁止重叠
@@ -83,10 +89,11 @@ public class DanmuService extends BaseService {
         mDanmukuContext = DanmakuContext.create();
         mDanmukuContext.setDanmakuStyle(IDisplayer.DANMAKU_STYLE_STROKEN, 3)
                 .setDuplicateMergingEnabled(false)
-                .setScrollSpeedFactor(speed)
-                .setScaleTextSize(font_size)
+                .setScrollSpeedFactor(danmuSpeed)
+                .setScaleTextSize(fontSize)
                 .setMaximumLines(maxLinesPair)
-                .preventOverlapping(overlappingEnablePair);
+                .preventOverlapping(overlappingEnablePair)
+                .setKeyWordBlackList(shieldList);
         if (mDanmuView != null) {
             mDanmuView.setCallback(new master.flame.danmaku.controller.DrawHandler.Callback() {
                 @Override
@@ -106,9 +113,7 @@ public class DanmuService extends BaseService {
                 @Override
                 public void prepared() {
                     mDanmuView.start();
-                    // TODO: 2018/3/18 获取视频进度
-//                    float percent = mSeekBar.getProgress() / (float) mSeekBar.getMax();
-//                    mDanmuView.seekTo((long) (mDanmuView.getDuration() * percent));
+                    mDanmuView.seekTo((long) (progress));
                     mDanmuView.show();
                     Log.i("PREPARED","解析完成,弹幕已启动！！！");
                 }
@@ -117,25 +122,59 @@ public class DanmuService extends BaseService {
         }
     }
 
+    /**
+     * 启动弹幕
+     */
     public void startDanmu(){
-        try {
-            int read_file_type = preferencesHelper.getInteger(READ_FILE_TYPE_KEY,1);
-            if (read_file_type == 1){
-                String read_folder_path = preferencesHelper.getString(READ_FOLDER_PATH_KEY,"");
-                if ("".equals(read_folder_path))return;
-                List<String> fileList = FileUtil.getAllFile(read_folder_path,false);
-                for (int i = 0; i < fileList.size(); i++) {
-                    String fileStr = fileList.get(i);
-                    if (fileStr.contains(FileUtil.getFileName(title)+".xml")){
+        if (mDanmuView.isShown()){
+            mDanmuView.resume();
+            mDanmuView.seekTo((long)progress);
+        }else {
+            try {
+                boolean getXml = false;
+                if (read_file_type == FOLDER){
+                    //从文件夹获取
+                    for (int i = 0; i < fileList.size(); i++) {
+                        String fileStr = fileList.get(i);
+                        if (fileStr.contains(FileUtil.getFileName(title)+".xml")){
+                            filePath = fileStr;
+                            getXml = true;
+                            break;
+                        }
+                    }
+                    //从上一次播放获取
+                    if (!getXml){
+                        List<String> list = databaseDao.query(title);
+                        if (list.size() > 0){
+                            filePath = list.get(0);
+                            getXml = true;
+                        }
+                    }
+                    if (getXml){
                         mDanmuView.release();
-                        FileInputStream danmu = new FileInputStream(fileStr);
-                        BaseDanmakuParser mParser = createParser(danmu);
-                        mDanmuView.prepare(mParser, mDanmukuContext);
+                        FileInputStream danmu = new FileInputStream(filePath);
+                        mDanmuView.prepare(BiliDanmukuParser.createParser(danmu), mDanmukuContext);
+                        databaseDao.insert(title,filePath);
+                    }
+                }else {
+                    //从上一次播放获取
+                    if ("".equals(filePath)){
+                        List<String> list = databaseDao.query(title);
+                        if (list.size() > 0){
+                            filePath = list.get(0);
+                            getXml = true;
+                        }
+                    }
+                    if (getXml){
+                        mDanmuView.release();
+                        FileInputStream danmu = new FileInputStream(filePath);
+                        mDanmuView.prepare(BiliDanmukuParser.createParser(danmu), mDanmukuContext);
+                        databaseDao.insert(title,filePath);
                     }
                 }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -145,10 +184,6 @@ public class DanmuService extends BaseService {
     @Subscribe(threadMode = ThreadMode.ASYNC )
     public void EventMessage(Event event) {
         switch (event.getKey()){
-            case Event.EVENT_MX_START:
-                System.out.println("mxPlayer is Start");
-                handler.sendEmptyMessage(101);
-                break;
             case Event.EVENT_START:
                 System.out.println("video start");
                 startDanmu();
@@ -156,14 +191,6 @@ public class DanmuService extends BaseService {
             case Event.EVENT_PAUSE:
                 System.out.println("video pause");
                 mDanmuView.pause();
-                break;
-            case Event.EVENT_SPEED:
-                System.out.println("video speed："+(int)event.getValue());
-                speed = (int)event.getValue();
-                break;
-            case Event.EVENT_DURATION:
-                System.out.println("video duration："+(int)event.getValue());
-                duration = (int)event.getValue();
                 break;
             case Event.EVENT_PROGRESS:
                 System.out.println("video progress："+(int)event.getValue());
@@ -174,34 +201,5 @@ public class DanmuService extends BaseService {
                 title = (String)event.getValue();
                 break;
         }
-    }
-
-    /**
-     * 解析弹幕
-     */
-    private BaseDanmakuParser createParser(InputStream stream) {
-
-        if (stream == null) {
-            return new BaseDanmakuParser() {
-
-                @Override
-                protected Danmakus parse() {
-                    return new Danmakus();
-                }
-            };
-        }
-
-        ILoader loader = DanmakuLoaderFactory.create(DanmakuLoaderFactory.TAG_BILI);
-
-        try {
-            assert loader != null;
-            loader.load(stream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        BaseDanmakuParser parser = new BiliDanmukuParser();
-        IDataSource<?> dataSource = loader.getDataSource();
-        parser.load(dataSource);
-        return parser;
     }
 }

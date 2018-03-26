@@ -8,7 +8,11 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/DanmakuFlameMaster" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/ndkbitmap-armv5" />
+            <option value="$PROJECT_DIR$/ndkbitmap-armv7a" />
+            <option value="$PROJECT_DIR$/ndkbitmap-x86" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -24,7 +24,7 @@ public class DatabaseDao {
     }
 
     public void insert(String videoPath, String danmuPath){
-        if (query(videoPath)){
+        if (query(videoPath).size() > 0){
             update(videoPath,danmuPath);
         }else {
             SQLiteDatabase db = helper.getWritableDatabase();
@@ -46,7 +46,7 @@ public class DatabaseDao {
         db.close();
     }
 
-    private boolean query(String videoPath){
+    public List<String> query(String videoPath){
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor c = db.query("danmu",null,"video_path=?",new String[]{videoPath},null,null,"id DESC");
         List<String> list = new ArrayList<>();
@@ -56,7 +56,7 @@ public class DatabaseDao {
         }
         c.close();
         db.close();
-        return list.size() > 0;
+        return list;
     }
 
     public void deleteAll(){

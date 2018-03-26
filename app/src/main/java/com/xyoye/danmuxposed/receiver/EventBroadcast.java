@@ -36,11 +36,11 @@ public class EventBroadcast extends BroadcastReceiver {
                     break;
                 case Event.EVENT_DURATION:
                     int duration = intent.getIntExtra(Event.EVENT_DURATION,0);
-                    EventBus.getDefault().post(new Event(Event.EVENT_SPEED,duration));
+                    EventBus.getDefault().post(new Event(Event.EVENT_DURATION,duration));
                     break;
                 case Event.EVENT_PROGRESS:
                     int progress = intent.getIntExtra(Event.EVENT_PROGRESS,0);
-                    EventBus.getDefault().post(new Event(Event.EVENT_SPEED,progress));
+                    EventBus.getDefault().post(new Event(Event.EVENT_PROGRESS,progress));
                     break;
                 case Event.EVENT_TITLE:
                     String title = intent.getStringExtra(Event.EVENT_TITLE);

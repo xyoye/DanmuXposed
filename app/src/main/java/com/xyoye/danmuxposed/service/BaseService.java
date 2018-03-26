@@ -78,9 +78,8 @@ public abstract class BaseService extends Service {
         wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
         wmParams.type = WindowManager.LayoutParams.TYPE_TOAST;
         wmParams.format = PixelFormat.RGBA_8888;
-        wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN   ;
         wmParams.gravity = Gravity.CENTER | Gravity.RIGHT;
-
         mWindowManager.addView(mLayout, wmParams);
         mLayout.measure(View.MeasureSpec.makeMeasureSpec(0,
                 View.MeasureSpec.UNSPECIFIED), View.MeasureSpec
@@ -100,7 +99,6 @@ public abstract class BaseService extends Service {
                     mWindowManager.updateViewLayout(mLayout, wmParams);
                     viewCloseBt.setText("开启");
                     view_close = false;
-
                     mDanmuView.hide();
                 }else {
                     mDanmuLayout.setVisibility(View.VISIBLE);
@@ -109,7 +107,6 @@ public abstract class BaseService extends Service {
                     mWindowManager.updateViewLayout(mLayout, wmParams);
                     viewCloseBt.setText("关闭");
                     view_close = true;
-                    mDanmuView.resume();
                     mDanmuView.show();
                 }
 
