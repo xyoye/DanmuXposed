@@ -523,17 +523,22 @@ public class DanmakuContext implements Cloneable {
     }
 
     /**
-     * 移除屏蔽关键字
-     * @param keywords
+     * 移除所有屏蔽关键字
      * @return
      */
-    public DanmakuContext removeKeyWordBlackList(String... keywords){
-        if (keywords == null){
+    public DanmakuContext removeAllKeyWordBlack(){
+        mUserKeyWordBlackList.clear();
+        setFilterData(DanmakuFilters.TAG_KEY_WORD_FILTER, mUserKeyWordBlackList);
+        mGlobalFlagValues.updateFilterFlag();
+        notifyConfigureChanged(DanmakuConfigTag.KEY_WORD_BLACK_LIST, mUserKeyWordBlackList);
+        return this;
+    }
+
+    public DanmakuContext removeKeyWordBlack(String keyword){
+        if (keyword == null){
             return this;
         }
-        for (String keyword : keywords) {
-            mUserKeyWordBlackList.remove(keyword);
-        }
+        mUserKeyWordBlackList.remove(keyword);
         setFilterData(DanmakuFilters.TAG_KEY_WORD_FILTER, mUserKeyWordBlackList);
         mGlobalFlagValues.updateFilterFlag();
         notifyConfigureChanged(DanmakuConfigTag.KEY_WORD_BLACK_LIST, mUserKeyWordBlackList);
@@ -552,6 +557,16 @@ public class DanmakuContext implements Cloneable {
         for (int i = 0; i < keywords.size(); i++) {
             Collections.addAll(mUserKeyWordBlackList,keywords.get(i));
         }
+        setFilterData(DanmakuFilters.TAG_KEY_WORD_FILTER, mUserKeyWordBlackList);
+        mGlobalFlagValues.updateFilterFlag();
+        notifyConfigureChanged(DanmakuConfigTag.KEY_WORD_BLACK_LIST, mUserKeyWordBlackList);
+        return this;
+    }
+    public DanmakuContext setKeyWordBlack(String keyword){
+        if (keyword == null){
+            return this;
+        }
+        Collections.addAll(mUserKeyWordBlackList,keyword);
         setFilterData(DanmakuFilters.TAG_KEY_WORD_FILTER, mUserKeyWordBlackList);
         mGlobalFlagValues.updateFilterFlag();
         notifyConfigureChanged(DanmakuConfigTag.KEY_WORD_BLACK_LIST, mUserKeyWordBlackList);

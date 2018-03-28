@@ -216,6 +216,31 @@ public class DanmuService extends BaseService {
                 System.out.println("video title："+event.getValue());
                 title = (String)event.getValue();
                 break;
+            case Event.EVENT_DANMU_SIZE:
+                mDanmukuContext.setScaleTextSize((float)event.getValue());
+                break;
+            case Event.EVENT_DANMU_SPEED:
+                mDanmukuContext.setScrollSpeedFactor((float)event.getValue());
+                break;
+            case Event.EVENT_DANMU_MOBILE:
+                mDanmukuContext.setR2LDanmakuVisibility((boolean)event.getValue());
+                mDanmukuContext.setL2RDanmakuVisibility((boolean)event.getValue());
+                break;
+            case Event.EVENT_DANMU_TOP:
+                mDanmukuContext.setFBDanmakuVisibility((boolean)event.getValue());
+                break;
+            case Event.EVENT_DANMU_BUTTON:
+                mDanmukuContext.setFTDanmakuVisibility((boolean)event.getValue());
+                break;
+            case Event.EVENT_DANMU_SHIELD_ADD:
+                mDanmukuContext.setKeyWordBlack((String)event.getValue());
+                break;
+            case Event.EVENT_DANMU_SHIELD_REMOVE:
+                mDanmukuContext.removeKeyWordBlack((String)event.getValue());
+                break;
+            case Event.EVENT_DANMU_SHIELD_REMOVE_ALL:
+                mDanmukuContext.removeAllKeyWordBlack();
+                break;
         }
     }
 }

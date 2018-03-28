@@ -1,7 +1,6 @@
 package com.xyoye.danmuxposed;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xyoye.danmuxposed.adapter.DrawerAdapter;
+import com.xyoye.danmuxposed.bean.Event;
 import com.xyoye.danmuxposed.database.DatabaseDao;
 import com.xyoye.danmuxposed.database.SharedPreferencesHelper;
 import com.xyoye.danmuxposed.service.DanmuService;
@@ -40,6 +40,8 @@ import com.xyoye.danmuxposed.ui.ShieldingActivity;
 import com.xyoye.danmuxposed.utils.ToastUtil;
 import com.xyoye.danmuxposed.weight.AmountView;
 import com.xyoye.danmuxposed.weight.SubmitButton;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -234,12 +236,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onAmountChange(View view, float value) {
                 font_size = value;
+                EventBus.getDefault().post(new Event(Event.EVENT_DANMU_SIZE,font_size));
             }
         });
         danmuSpeedInput.setOnAmountChangeListener(new AmountView.OnAmountChangeListener() {
             @Override
             public void onAmountChange(View view, float value) {
                 danmu_speed = value;
+                EventBus.getDefault().post(new Event(Event.EVENT_DANMU_SPEED,danmu_speed));
             }
         });
 
@@ -296,16 +300,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.mobile_danmu_iv:
                 mobile_danmu = !mobile_danmu;
                 int resId = mobile_danmu ? R.mipmap.moblie_danmu_checked : R.mipmap.moblie_danmu_unchecked;
+                EventBus.getDefault().post(new Event(Event.EVENT_DANMU_MOBILE,mobile_danmu));
                 mobileDanmuIv.setImageResource(resId);
                 break;
             case R.id.button_danmu_iv:
                 button_danmu = !button_danmu;
                 resId = button_danmu ? R.mipmap.bottom_danmu_checked : R.mipmap.bottom_danmu_unchecked;
+                EventBus.getDefault().post(new Event(Event.EVENT_DANMU_BUTTON,button_danmu));
                 buttonDanmuIv.setImageResource(resId);
                 break;
             case R.id.top_danmu_iv:
                 top_danmu = !top_danmu;
                 resId = top_danmu ? R.mipmap.top_danmu_checked : R.mipmap.top_danmu_unchecked;
+                EventBus.getDefault().post(new Event(Event.EVENT_DANMU_TOP,top_danmu));
                 topDanmuIv.setImageResource(resId);
                 break;
             case R.id.shielding_activity_bt:
@@ -564,6 +571,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 databaseDao.deleteAllShield();
+                EventBus.getDefault().post(new Event(Event.EVENT_DANMU_SHIELD_REMOVE_ALL));
                 databaseDao.deleteAll();
                 deleteTv.setText("数据已清空");
                 deleteBt.doResult(true);

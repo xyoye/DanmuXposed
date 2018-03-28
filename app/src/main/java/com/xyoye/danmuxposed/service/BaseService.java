@@ -5,7 +5,9 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.DragEvent;
@@ -20,6 +22,7 @@ import android.widget.RelativeLayout;
 import com.xyoye.danmuxposed.R;
 import com.xyoye.danmuxposed.bean.Event;
 import com.xyoye.danmuxposed.receiver.EventBroadcast;
+import com.xyoye.danmuxposed.utils.Animation;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -96,27 +99,35 @@ public abstract class BaseService extends Service {
             public void onClick(View v)
             {
                 if (view_close){
+                    mDanmuLayout.setVisibility(View.VISIBLE);
+                    mDanmuView.show();
+                    wmParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    wmParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+                    mWindowManager.updateViewLayout(mLayout, wmParams);
+                    viewCloseBt.setText("关闭");
+                    new Animation().setHideAnimation(viewCloseBt);
+                    viewCloseBt.setBackgroundResource(R.drawable.btn_circular_white);
+                    view_close = false;
+                }else {
+                    mDanmuView.hide();
                     mDanmuLayout.setVisibility(View.GONE);
                     wmParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
                     wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
                     mWindowManager.updateViewLayout(mLayout, wmParams);
                     viewCloseBt.setText("开启");
-                    viewCloseBt.setAlpha(1.0f);
+                    new Animation().setShowAnimation(viewCloseBt);
                     viewCloseBt.setBackgroundResource(R.drawable.btn_circular_blue);
-                    view_close = false;
-                    mDanmuView.hide();
-                }else {
-                    mDanmuLayout.setVisibility(View.VISIBLE);
-                    wmParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    wmParams.height = WindowManager.LayoutParams.MATCH_PARENT;
-                    mWindowManager.updateViewLayout(mLayout, wmParams);
-                    viewCloseBt.setText("关闭");
-                    viewCloseBt.setAlpha(0.1f);
-                    viewCloseBt.setBackgroundResource(R.drawable.btn_circular_white);
                     view_close = true;
-                    mDanmuView.show();
                 }
 
+            }
+        });
+
+        mDanmuLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                new Animation().setHideAnimation(viewCloseBt);
+                return false;
             }
         });
     }

@@ -17,8 +17,11 @@ import android.widget.Toast;
 
 import com.donkingliang.labels.LabelsView;
 import com.xyoye.danmuxposed.R;
+import com.xyoye.danmuxposed.bean.Event;
 import com.xyoye.danmuxposed.database.DatabaseDao;
 import com.xyoye.danmuxposed.weight.SubmitButton;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -96,6 +99,7 @@ public class ShieldingActivity extends AppCompatActivity implements View.OnClick
                         shieldList.add(text);
                         shieldingLabels.setLabels(shieldList);
                         shieldEt.setText("");
+                        EventBus.getDefault().post(new Event(Event.EVENT_DANMU_SHIELD_ADD,text));
                     }
                 }
                 break;
@@ -116,6 +120,7 @@ public class ShieldingActivity extends AppCompatActivity implements View.OnClick
             public void onClick(View v) {
                 for (int i = 0; i < selectData.size(); i++) {
                     databaseDao.deleteShield(selectData.get(i));
+                    EventBus.getDefault().post(new Event(Event.EVENT_DANMU_SHIELD_REMOVE,selectData.get(i)));
                     deleteBt.setProgress(i*100/selectData.size());
                     deleteTv.setText("成功删除："+(i+1));
                 }
