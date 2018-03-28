@@ -10,7 +10,7 @@
 
     <solid android:color="@android:color/transparent"/>
 
-    <stroke android:color="@android:color/white"
+    <stroke android:color="#33b5e5"
         android:width="1dp"/>
 
     <!-- 设置按钮的四个角为弧形 -->

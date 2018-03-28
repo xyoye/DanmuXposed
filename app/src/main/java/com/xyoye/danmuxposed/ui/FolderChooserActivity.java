@@ -1,13 +1,18 @@
 package com.xyoye.danmuxposed.ui;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,11 +28,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.xyoye.danmuxposed.MainActivity;
 import com.xyoye.danmuxposed.R;
 import com.xyoye.danmuxposed.adapter.FolderChooserAdapter;
 import com.xyoye.danmuxposed.bean.FolderChooserInfo;
 import com.xyoye.danmuxposed.database.SharedPreferencesHelper;
 import com.xyoye.danmuxposed.utils.HorizontalDividerItemDecoration;
+import com.xyoye.danmuxposed.utils.ToastUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -58,8 +65,10 @@ public class FolderChooserActivity extends AppCompatActivity implements View.OnC
     @BindView(R.id.ll_loading)
     LinearLayout llLoading;
     @BindView(R.id.local_network)
-    TextView localNetwork;      //局域网按钮
+    TextView localNetwork;
+
     SharedPreferencesHelper sharedPreferencesHelper;
+    private static final int GET_INTERNET_PERMISSIONS = 102;
 
     //是否为文件夹选择器。true文件夹，false文件
     private boolean isFolderChooser = false;
@@ -445,8 +454,16 @@ public class FolderChooserActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.local_network:
-                showConnectDialog();
+                checkPermission();
                 break;
+        }
+    }
+
+    private void checkPermission(){
+        if (ContextCompat.checkSelfPermission(FolderChooserActivity.this, Manifest.permission.INTERNET)== PackageManager.PERMISSION_DENIED ){
+            ActivityCompat.requestPermissions(FolderChooserActivity.this,new String[]{Manifest.permission.INTERNET},GET_INTERNET_PERMISSIONS);
+        } else{
+            showConnectDialog();
         }
     }
 
@@ -467,6 +484,18 @@ public class FolderChooserActivity extends AppCompatActivity implements View.OnC
     public boolean onCreateOptionsMenu(Menu menu) {
         if (isFolderChooser) getMenuInflater().inflate(R.menu.menu_file, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == GET_INTERNET_PERMISSIONS){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                showConnectDialog();
+            }else {
+                ToastUtil.showToast(FolderChooserActivity.this,"网络权限被拒绝");
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override

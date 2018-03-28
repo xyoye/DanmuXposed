@@ -29,4 +29,40 @@
     <string name="add_symbol">+</string>
     <string name="localNetwork">局域网</string>
     <string name="select">选择</string>
+    <string name="donation">捐赠</string>
+
+    <string name="about_use">
+        一、使用环境\n
+            &#160;&#160;&#160;&#160;Xposed，MxPlayer。DanmuXposed模块基于MxPlayer播放器，
+            简单来说就是通过MxPlayer播放视频时，此模块可同步播放弹幕。(兼容pro版本)\n\n
+
+        二、使用流程\n
+            ①设置弹幕属性（速度、大小、屏蔽）\n
+            ②设置读取弹幕的路径\n
+            ③首界面打开监听\n
+            ④MxPlayer播放视频，并开启弹幕\n\n
+
+        三、权限说明\n
+            应用列表：监听弹幕服务是否开启\n
+            读写文件：读取弹幕，写入缓存弹幕\n
+            发送彩信：网络权限，smb读取局域网文件时需要\n\n
+
+            注：设置读取弹幕的路径为文件夹时，将读取文件夹内与视频名相同的弹幕文件
+    </string>
+    <string name="about_model">
+            DanmuXposed模块是为了专门播放弹幕而制作的插件\n\n
+
+            去年制作过一个播放视频和弹幕的DanmuPlayer，
+            但是在播放视频方面有太多的问题需要解决，感觉是个优化不完的坑，
+            正好最近了解了一下Xposed，然后就制作了这个基于MxPlayer的模块。\n\n
+
+            注：如需DanmuPlayer可到我的GitHub上下载。\n
+            此模块仅供各位弹幕爱好者交流学习使用。如有修改本模块（修改变更，反编译）等信息后所发布的文件与本人无关。\n\n
+
+            开发者：xyoye\n
+            联系方式：yeshao1997@outlook.com\n
+            GitHub：github.com/xyoye/DanmuXposed\n\n
+            编辑时间：2018.3.28\n\n
+    </string>
+    <string name="about_donation">开发不易，如果你愿意的话，不论多少，感谢支持。</string>
 </resources>

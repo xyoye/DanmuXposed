@@ -39,7 +39,7 @@ public class Animation {
         }
         // 监听动画结束的操作
         mHideAnimation = new AlphaAnimation(1.0f, 0.1f);
-        mHideAnimation.setDuration(1000);
+        mHideAnimation.setDuration(2000);
         mHideAnimation.setFillAfter(true);
         view.startAnimation(mHideAnimation);
         mHideAnimation = null;

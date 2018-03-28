@@ -120,6 +120,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.path_setting_update)
     Button pathSettingConfirmBt;
 
+    //layout4
+    @BindView(R.id.layout4)
+    RelativeLayout layout4;
+    @BindView(R.id.about_text)
+    TextView aboutText;
+    @BindView(R.id.donation)
+    TextView donation;
+
     private final static int SELECT_FOLDER = 1;
     private final static int SELECT_FILE = 0;
     private static final int GET_FILE_PERMISSIONS = 101;
@@ -143,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int read_file_type;
     private String read_file_path;
     private String read_folder_path;
+    private boolean donation_type = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -232,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mobileDanmuIv.setOnClickListener(this);
         buttonDanmuIv.setOnClickListener(this);
         topDanmuIv.setOnClickListener(this);
+        donation.setOnClickListener(this);
         fontSizeInput.setOnAmountChangeListener(new AmountView.OnAmountChangeListener() {
             @Override
             public void onAmountChange(View view, float value) {
@@ -331,6 +341,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.path_setting_update:
                 saveInfo(2);
                 break;
+            case R.id.donation:
+                showDonationDialog();
+                break;
         }
     }
 
@@ -348,6 +361,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 3:
                 deleteData();
+                break;
+            case 5:
+                showAbout(1);
+                break;
+            case 6:
+                showAbout(2);
                 break;
         }
     }
@@ -434,6 +453,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 layout1.setVisibility(View.VISIBLE);
                 layout2.setVisibility(View.GONE);
                 layout3.setVisibility(View.GONE);
+                layout4.setVisibility(View.GONE);
                 mDrawerLayout.closeDrawers();
                 break;
             case 1:
@@ -458,6 +478,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 layout1.setVisibility(View.GONE);
                 layout2.setVisibility(View.VISIBLE);
                 layout3.setVisibility(View.GONE);
+                layout4.setVisibility(View.GONE);
                 mDrawerLayout.closeDrawers();
                 break;
             case 2:
@@ -481,6 +502,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 layout1.setVisibility(View.GONE);
                 layout2.setVisibility(View.GONE);
                 layout3.setVisibility(View.VISIBLE);
+                layout4.setVisibility(View.GONE);
                 mDrawerLayout.closeDrawers();
                 break;
         }
@@ -579,6 +601,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         builder_delete.setView(dialogView);
         builder_delete.show();
+    }
+
+    private void showAbout(int type){
+        layout1.setVisibility(View.GONE);
+        layout2.setVisibility(View.GONE);
+        layout3.setVisibility(View.GONE);
+        layout4.setVisibility(View.VISIBLE);
+        mDrawerLayout.closeDrawers();
+        switch (type){
+            case 1:
+                donation.setVisibility(View.GONE);
+                title.setText("使用说明");
+                aboutText.setText(getResources().getString(R.string.about_use));
+                break;
+            case 2:
+                donation.setVisibility(View.VISIBLE);
+                title.setText("关于");
+                aboutText.setText(getResources().getString(R.string.about_model));
+                break;
+        }
+    }
+
+    private void showDonationDialog(){
+        final AlertDialog.Builder builder_donation = new AlertDialog.Builder(MainActivity.this);
+        View dialogView = View.inflate(MainActivity.this,R.layout.dialog_donation,null);
+        final ImageView donationIv = dialogView.findViewById(R.id.donation_image);
+        donationIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (donation_type){
+                    donationIv.setImageResource(R.mipmap.wechat);
+                    donation_type=false;
+                }else {
+                    donationIv.setImageResource(R.mipmap.alipay);
+                    donation_type=true;
+                }
+            }
+        });
+        builder_donation.setView(dialogView);
+        builder_donation.show();
     }
 
     @Override
