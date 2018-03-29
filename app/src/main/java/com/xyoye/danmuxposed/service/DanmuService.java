@@ -160,48 +160,36 @@ public class DanmuService extends BaseService {
         }else {
             try {
                 boolean getXml = false;
-                if (read_file_type == FOLDER){
-                    //从文件夹获取
+                //根据路径获取
+                if (read_file_type == FOLDER) {
                     for (int i = 0; i < fileList.size(); i++) {
                         String fileStr = fileList.get(i);
-                        if (fileStr.contains(FileUtil.getFileName(title)+".xml")){
+                        if (fileStr.contains(FileUtil.getFileName(title) + ".xml")) {
                             filePath = fileStr;
                             getXml = true;
                             break;
                         }
                     }
-                    //从上一次播放获取
-                    if (!getXml){
-                        List<String> list = databaseDao.query(title);
-                        if (list.size() > 0){
-                            filePath = list.get(0);
-                            getXml = true;
-                        }
-                    }
-                    if (getXml){
-                        File file = new File(filePath);
-                        if (!file.exists())return;
-                        mDanmuView.release();
-                        FileInputStream danmu = new FileInputStream(filePath);
-                        mDanmuView.prepare(BiliDanmukuParser.createParser(danmu), mDanmukuContext);
-                        databaseDao.insert(title,filePath);
-                    }
                 }else {
-                    //从上一次播放获取
-                    if ("".equals(filePath)){
-                        List<String> list = databaseDao.query(title);
-                        if (list.size() > 0){
-                            filePath = list.get(0);
-                        }
-                    }else {
-                        File file = new File(filePath);
-                        if (!file.exists())
-                            return;
-                        mDanmuView.release();
-                        FileInputStream danmu = new FileInputStream(filePath);
-                        mDanmuView.prepare(BiliDanmukuParser.createParser(danmu), mDanmukuContext);
-                        databaseDao.insert(title,filePath);
+                    if (!"".equals(filePath)){
+                        getXml = true;
                     }
+                }
+                //从上一次获取
+                if (!getXml){
+                    List<String> list = databaseDao.query(title);
+                    if (list.size() > 0){
+                        filePath = list.get(0);
+                    }
+                }
+                if (!"".equals(filePath)){
+                    File file = new File(filePath);
+                    if (!file.exists())
+                        return;
+                    mDanmuView.release();
+                    FileInputStream danmu = new FileInputStream(filePath);
+                    mDanmuView.prepare(BiliDanmukuParser.createParser(danmu), mDanmukuContext);
+                    databaseDao.insert(title,filePath);
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
