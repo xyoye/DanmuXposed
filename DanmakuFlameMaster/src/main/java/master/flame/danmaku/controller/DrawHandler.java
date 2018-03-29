@@ -250,7 +250,9 @@ public class DrawHandler extends Handler {
                     long deltaMs = position - timer.currMillisecond;
                     mTimeBase -= deltaMs;
                     timer.update(position);
-                    mContext.mGlobalFlagValues.updateMeasureFlag();
+                    try{
+                        mContext.mGlobalFlagValues.updateMeasureFlag();
+                    }catch (Exception e){e.printStackTrace();}
                     if (drawTask != null)
                         drawTask.seek(position);
                     pausedPosition = position;

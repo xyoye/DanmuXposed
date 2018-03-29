@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.xyoye.danmuxposed.R;
 import com.xyoye.danmuxposed.bean.Event;
@@ -26,6 +27,7 @@ import com.xyoye.danmuxposed.utils.Animation;
 
 import org.greenrobot.eventbus.EventBus;
 
+import butterknife.BindView;
 import master.flame.danmaku.ui.widget.DanmakuView;
 
 /**
@@ -35,6 +37,7 @@ import master.flame.danmaku.ui.widget.DanmakuView;
 
 public abstract class BaseService extends Service {
     boolean view_close = true;
+    boolean progressDisplay = false;
     RelativeLayout mLayout;
     WindowManager.LayoutParams wmParams;
     WindowManager mWindowManager;
@@ -42,6 +45,11 @@ public abstract class BaseService extends Service {
     RelativeLayout mDanmuLayout;
     DanmakuView mDanmuView;
     Button viewCloseBt;
+
+    RelativeLayout progressController;
+    Button speedA;
+    Button speedDA;
+    TextView speedText;
 
     IntentFilter intentFilter;
     EventBroadcast myBrodcast;
@@ -93,6 +101,10 @@ public abstract class BaseService extends Service {
 
         mDanmuLayout = mLayout.findViewById(R.id.danmu_layout);
         viewCloseBt = mLayout.findViewById(R.id.danmu_view_close);
+        progressController = mLayout.findViewById(R.id.progress_controller);
+        speedA = mLayout.findViewById(R.id.danmu_speed_accelerate);
+        speedDA = mLayout.findViewById(R.id.danmu_speed_deceleration);
+        speedText = mLayout.findViewById(R.id.danmu_speed_text);
 
         viewCloseBt.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -123,10 +135,34 @@ public abstract class BaseService extends Service {
             }
         });
 
+        viewCloseBt.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (!view_close){
+                    viewCloseBt.setEnabled(false);
+                    progressController.setVisibility(View.VISIBLE);
+                    progressDisplay = true;
+                }
+                return true;
+            }
+        });
+
+        progressController.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
         mDanmuLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 new Animation().setHideAnimation(viewCloseBt);
+                if (progressDisplay){
+                    viewCloseBt.setEnabled(true);
+                    progressController.setVisibility(View.GONE);
+                    progressDisplay = false;
+                }
                 return false;
             }
         });

@@ -15,6 +15,47 @@
             android:layout_height="match_parent"/>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/progress_controller"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bg_progress_controller"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/danmu_speed_deceleration"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="40dp"
+            android:background="@drawable/btn_circular_blue_2"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:text="-"/>
+
+        <TextView
+            android:id="@+id/danmu_speed_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:layout_centerInParent="true"
+            android:text="0.0"/>
+
+        <Button
+            android:id="@+id/danmu_speed_accelerate"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/btn_circular_blue_2"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:text="+"/>
+
+    </RelativeLayout>
+
     <Button
         android:id="@+id/danmu_view_close"
         android:layout_width="55dp"

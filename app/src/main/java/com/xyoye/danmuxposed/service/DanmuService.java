@@ -2,6 +2,7 @@ package com.xyoye.danmuxposed.service;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
+import android.view.View;
 
 import com.xyoye.danmuxposed.R;
 import com.xyoye.danmuxposed.bean.Event;
@@ -13,6 +14,7 @@ import com.xyoye.danmuxposed.utils.FileUtil;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import master.flame.danmaku.danmaku.model.BaseDanmaku;
 import master.flame.danmaku.danmaku.model.DanmakuTimer;
 import master.flame.danmaku.danmaku.model.IDisplayer;
 import master.flame.danmaku.danmaku.model.android.DanmakuContext;
+import master.flame.danmaku.ui.widget.DanmakuView;
 
 import static com.xyoye.danmuxposed.utils.DanmuConfig.BUTTON_DANMU_KEY;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_FONT_SIZE_KEY;
@@ -50,6 +53,7 @@ public class DanmuService extends BaseService {
     private boolean buttonDanmu;
     private List<String> shieldList;
     private List<String> fileList;
+    private double changeSpeed = 0;
 
     @Override
     public void onCreate(){
@@ -59,6 +63,8 @@ public class DanmuService extends BaseService {
         initData();
 
         initDanmuView();
+
+        initListener();
     }
 
     private void initData(){
@@ -88,22 +94,9 @@ public class DanmuService extends BaseService {
      */
     @SuppressLint("UseSparseArrays")
     private void initDanmuView(){
-        // 设置最大显示行数
-        HashMap<Integer, Integer> maxLinesPair = new HashMap<>();
-        // 设置是否禁止重叠
-        HashMap<Integer, Boolean> overlappingEnablePair = new HashMap<>();
-        maxLinesPair.put(BaseDanmaku.TYPE_SCROLL_RL, 5); // 滚动弹幕最大显示5行
-        overlappingEnablePair.put(BaseDanmaku.TYPE_SCROLL_RL, true);
-        overlappingEnablePair.put(BaseDanmaku.TYPE_FIX_TOP, true);
+        initDanmuContext();
         mDanmuView = mLayout.findViewById(R.id.danmu_view);
-        mDanmukuContext = DanmakuContext.create();
-        mDanmukuContext.setDanmakuStyle(IDisplayer.DANMAKU_STYLE_STROKEN, 3)
-                .setDuplicateMergingEnabled(false)
-                .setScrollSpeedFactor(danmuSpeed)
-                .setScaleTextSize(fontSize)
-                .setMaximumLines(maxLinesPair)
-                .preventOverlapping(overlappingEnablePair)
-                .setKeyWordBlackList(shieldList);
+
         if (!mobileDanmu) {
             mDanmukuContext.setR2LDanmakuVisibility(true);
             mDanmukuContext.setL2RDanmakuVisibility(true);
@@ -138,11 +131,36 @@ public class DanmuService extends BaseService {
         }
     }
 
+    public void initListener(){
+        speedA.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(View v) {
+                if (mDanmuView.isPrepared()){
+                    mDanmuView.seekTo(mDanmuView.getCurrentTime()+500);
+                    changeSpeed += 0.5;
+                    speedText.setText(changeSpeed+"");
+                }
+            }
+        });
+        speedDA.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(View v) {
+                if (mDanmuView.isPrepared()){
+                    mDanmuView.seekTo(mDanmuView.getCurrentTime()-500);
+                    changeSpeed -= 0.5;
+                    speedText.setText(changeSpeed+"");
+                }
+            }
+        });
+    }
+
     /**
      * 启动弹幕
      */
     public void startDanmu(){
-        if (mDanmuView.isShown()){
+        if (mDanmuView.isPrepared()){
             mDanmuView.resume();
             mDanmuView.seekTo((long)progress);
         }else {
@@ -167,6 +185,8 @@ public class DanmuService extends BaseService {
                         }
                     }
                     if (getXml){
+                        File file = new File(filePath);
+                        if (!file.exists())return;
                         mDanmuView.release();
                         FileInputStream danmu = new FileInputStream(filePath);
                         mDanmuView.prepare(BiliDanmukuParser.createParser(danmu), mDanmukuContext);
@@ -180,8 +200,9 @@ public class DanmuService extends BaseService {
                             filePath = list.get(0);
                             getXml = true;
                         }
-                    }
-                    if (getXml){
+                    }else {
+                        File file = new File(filePath);
+                        if (!file.exists())return;
                         mDanmuView.release();
                         FileInputStream danmu = new FileInputStream(filePath);
                         mDanmuView.prepare(BiliDanmukuParser.createParser(danmu), mDanmukuContext);
@@ -192,6 +213,24 @@ public class DanmuService extends BaseService {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void initDanmuContext(){
+        // 设置最大显示行数
+        HashMap<Integer, Integer> maxLinesPair = new HashMap<>();
+        // 设置是否禁止重叠
+        HashMap<Integer, Boolean> overlappingEnablePair = new HashMap<>();
+        maxLinesPair.put(BaseDanmaku.TYPE_SCROLL_RL, 5); // 滚动弹幕最大显示5行
+        overlappingEnablePair.put(BaseDanmaku.TYPE_SCROLL_RL, true);
+        overlappingEnablePair.put(BaseDanmaku.TYPE_FIX_TOP, true);
+        mDanmukuContext = DanmakuContext.create();
+        mDanmukuContext.setDanmakuStyle(IDisplayer.DANMAKU_STYLE_STROKEN, 3)
+                .setDuplicateMergingEnabled(false)
+                .setScrollSpeedFactor(danmuSpeed)
+                .setScaleTextSize(fontSize)
+                .setMaximumLines(maxLinesPair)
+                .preventOverlapping(overlappingEnablePair)
+                .setKeyWordBlackList(shieldList);
     }
 
     /**
