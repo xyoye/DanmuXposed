@@ -62,6 +62,8 @@ public class DanmuService extends BaseService {
 
         initData();
 
+        initDanmuContext();
+
         initDanmuView();
 
         initListener();
@@ -94,15 +96,7 @@ public class DanmuService extends BaseService {
      */
     @SuppressLint("UseSparseArrays")
     private void initDanmuView(){
-        initDanmuContext();
         mDanmuView = mLayout.findViewById(R.id.danmu_view);
-
-        if (!mobileDanmu) {
-            mDanmukuContext.setR2LDanmakuVisibility(true);
-            mDanmukuContext.setL2RDanmakuVisibility(true);
-        }
-        if (!topDanmu) mDanmukuContext.setFBDanmakuVisibility(true);
-        if (!buttonDanmu) mDanmukuContext.setFTDanmakuVisibility(true);
         if (mDanmuView != null) {
             mDanmuView.setCallback(new master.flame.danmaku.controller.DrawHandler.Callback() {
                 @Override
@@ -198,11 +192,11 @@ public class DanmuService extends BaseService {
                         List<String> list = databaseDao.query(title);
                         if (list.size() > 0){
                             filePath = list.get(0);
-                            getXml = true;
                         }
                     }else {
                         File file = new File(filePath);
-                        if (!file.exists())return;
+                        if (!file.exists())
+                            return;
                         mDanmuView.release();
                         FileInputStream danmu = new FileInputStream(filePath);
                         mDanmuView.prepare(BiliDanmukuParser.createParser(danmu), mDanmukuContext);
@@ -231,6 +225,13 @@ public class DanmuService extends BaseService {
                 .setMaximumLines(maxLinesPair)
                 .preventOverlapping(overlappingEnablePair)
                 .setKeyWordBlackList(shieldList);
+
+        if (!mobileDanmu) {
+            mDanmukuContext.setR2LDanmakuVisibility(true);
+            mDanmukuContext.setL2RDanmakuVisibility(true);
+        }
+        if (!topDanmu) mDanmukuContext.setFBDanmakuVisibility(true);
+        if (!buttonDanmu) mDanmukuContext.setFTDanmakuVisibility(true);
     }
 
     /**
