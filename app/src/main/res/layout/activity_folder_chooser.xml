@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".ui.FolderChooserActivity">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar2" />
 
     <RelativeLayout
         android:layout_width="wrap_content"

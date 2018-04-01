@@ -4,6 +4,8 @@
     android:id="@+id/layout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="76dp"
+    android:background="@mipmap/bg3"
     android:visibility="gone">
 
     <LinearLayout
@@ -17,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="@color/textTipColor"
             android:textSize="14sp"
             android:text="@string/font_size"/>
 
@@ -52,7 +54,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="30dp"
                 android:textSize="16sp"
-                android:textColor="@android:color/holo_blue_light"
+                android:textColor="@color/textTipColor"
                 android:text="@string/restore_default"/>
         </RelativeLayout>
 
@@ -65,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="@color/textTipColor"
             android:textSize="14sp"
             android:text="@string/danmu_speed"/>
 
@@ -100,7 +102,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="30dp"
                 android:textSize="16sp"
-                android:textColor="@android:color/holo_blue_light"
+                android:textColor="@color/textTipColor"
                 android:text="@string/restore_default"/>
         </RelativeLayout>
 
@@ -113,7 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="@color/textTipColor"
             android:textSize="14sp"
             android:text="@string/shielding_type"/>
         <LinearLayout
@@ -139,6 +141,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="12sp"
+                    android:textColor="@android:color/white"
                     android:text="@string/mobile_danmu"/>
             </LinearLayout>
             <LinearLayout
@@ -157,6 +160,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="12sp"
+                    android:textColor="@android:color/white"
                     android:text="@string/button_danmu"/>
             </LinearLayout>
             <LinearLayout
@@ -175,6 +179,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="12sp"
+                    android:textColor="@android:color/white"
                     android:text="@string/top_danmu"/>
             </LinearLayout>
 
@@ -189,7 +194,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="@color/textTipColor"
             android:textSize="14sp"
             android:text="@string/shielding_danmu"/>
 
@@ -221,7 +226,7 @@
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/button_corner"
+                android:background="@drawable/btn_corner_blue"
                 android:textSize="14sp"
                 style="@style/Widget.AppCompat.Button"
                 android:textColor="@android:color/white"
@@ -239,7 +244,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
-        android:background="@drawable/button_corner"
+        android:background="@drawable/btn_corner_blue"
         style="@style/Widget.AppCompat.Button"
         android:textColor="@android:color/white"
         android:textSize="14sp"

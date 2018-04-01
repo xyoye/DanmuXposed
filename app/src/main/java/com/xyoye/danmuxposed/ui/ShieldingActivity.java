@@ -53,7 +53,6 @@ public class ShieldingActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shielding);
         ButterKnife.bind(this);
-
         title.setText("屏蔽列表");
         shieldBt.setOnClickListener(this);
         setSupportActionBar(toolbar);

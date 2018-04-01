@@ -22,7 +22,8 @@
     <color name="gray">#9e9e9e</color>
     <color name="blue_gray">#607d8b</color>
 
+    <color name="toolbarColor">#88313b44</color>
     <color name="statusColor">#1a97f9</color>
-    <color name="toolbarColor">#1a97f9</color>
+    <color name="textTipColor">@android:color/holo_blue_light</color>
     <color name="divider">#ffd2d2d2</color>
 </resources>

@@ -3,6 +3,8 @@
     android:id="@+id/layout3"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:paddingTop="76dp"
+    android:background="@mipmap/bg3"
     android:visibility="gone">
 
     <LinearLayout
@@ -15,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="@color/textTipColor"
             android:textSize="14sp"
             android:text="@string/read_file_type"/>
 
@@ -36,6 +38,7 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:textSize="16sp"
+               android:textColor="@android:color/white"
                android:text="@string/read_for_file"/>
 
            <RadioButton
@@ -49,6 +52,7 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:textSize="16sp"
+               android:textColor="@android:color/white"
                android:text="@string/read_for_folder"/>
        </RadioGroup>
 
@@ -61,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="@color/textTipColor"
             android:textSize="14sp"
             android:text="@string/select_file"/>
 
@@ -78,6 +82,7 @@
                 android:layout_marginStart="10dp"
                 android:singleLine="true"
                 android:ellipsize="start"
+                android:textColor="@android:color/white"
                 android:textSize="16sp"/>
 
             <TextView
@@ -88,7 +93,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="30dp"
                 android:textSize="16sp"
-                android:textColor="@android:color/holo_blue_light"
+                android:textColor="@color/textTipColor"
                 android:text="@string/change"/>
         </RelativeLayout>
 
@@ -101,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="@color/textTipColor"
             android:textSize="14sp"
             android:text="@string/select_folder"/>
 
@@ -118,6 +123,7 @@
                 android:layout_marginStart="10dp"
                 android:singleLine="true"
                 android:ellipsize="start"
+                android:textColor="@android:color/white"
                 android:textSize="16sp"/>
 
             <TextView
@@ -128,7 +134,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="30dp"
                 android:textSize="16sp"
-                android:textColor="@android:color/holo_blue_light"
+                android:textColor="@color/textTipColor"
                 android:text="@string/change"/>
         </RelativeLayout>
 
@@ -142,7 +148,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
-        android:background="@drawable/button_corner"
+        android:background="@drawable/btn_corner_blue"
         style="@style/Widget.AppCompat.Button"
         android:textColor="@android:color/white"
         android:textSize="14sp"

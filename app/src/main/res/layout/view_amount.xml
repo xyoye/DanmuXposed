@@ -23,7 +23,7 @@
         android:layout_height="match_parent"
         android:minWidth="60dp"
         android:layout_weight="2"
-        android:background="@null"
+        android:background="@drawable/btn_corner_white"
         android:inputType="number"
         android:gravity="center"/>
 

@@ -2,17 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout1"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@mipmap/bg1">
+
+    <com.xyoye.danmuxposed.weight.CircleImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/main_btn"/>
 
     <Button
         android:id="@+id/danmu_switch"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
-        android:background="@drawable/button_corner"
+        android:background="@drawable/btn_corner_blue"
         style="@style/Widget.AppCompat.Button"
         android:textColor="@android:color/white"
         android:textSize="14sp"

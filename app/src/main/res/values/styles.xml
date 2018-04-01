@@ -2,13 +2,11 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!--状态栏颜色-->
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
         <item name="colorPrimaryDark">@color/statusColor</item>
-        <!--Toolbar颜色-->
-        <item name="colorPrimary">@color/toolbarColor</item>
         <!--返回键样式-->
         <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
     </style>
-
     <style name="AppTheme.DrawerArrowToggle" parent="Base.Widget.AppCompat.DrawerArrowToggle">
         <item name="color">@android:color/white</item>
         <item name="colorControlNormal">@android:color/white</item>

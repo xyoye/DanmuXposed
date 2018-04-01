@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar2" />
 
     <com.donkingliang.labels.LabelsView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -57,7 +57,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="12dp"
-                android:background="@drawable/button_corner"
+                android:background="@drawable/btn_corner_blue"
                 android:text="@string/add"
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />

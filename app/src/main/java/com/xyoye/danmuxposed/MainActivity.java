@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -20,6 +21,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -156,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         SharedPreferencesHelper.init(this);
@@ -199,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
+
 
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open, R.string.close) {
             @Override
@@ -267,15 +273,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (checkedId){
                     case R.id.read_file_radio:
                         read_file_type = FILE;
-                        changeFilePathTv.setEnabled(true);
-                        changeFolderPathTv.setEnabled(false);
+                        changeFilePathTv.setVisibility(View.VISIBLE);
+                        changeFolderPathTv.setVisibility(View.GONE);
                         changeFilePathTv.setTextColor(Color.parseColor("#33b5e5"));
                         changeFolderPathTv.setTextColor(Color.parseColor("#8a8a8a"));
                         break;
                     case R.id.read_folder_radio:
                         read_file_type = FOLDER;
-                        changeFilePathTv.setEnabled(false);
-                        changeFolderPathTv.setEnabled(true);
+                        changeFilePathTv.setVisibility(View.GONE);
+                        changeFolderPathTv.setVisibility(View.VISIBLE);
                         changeFilePathTv.setTextColor(Color.parseColor("#8a8a8a"));
                         changeFolderPathTv.setTextColor(Color.parseColor("#33b5e5"));
                         break;
@@ -490,12 +496,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 filePathTv.setText(read_file_path);
                 if (read_file_type == FILE){
                     readFileRadio.setChecked(true);
-                    changeFilePathTv.setEnabled(true);
-                    changeFolderPathTv.setEnabled(false);
+                    changeFilePathTv.setVisibility(View.VISIBLE);
+                    changeFolderPathTv.setVisibility(View.GONE);
                 }else {
                     readFolderRadio.setChecked(true);
-                    changeFilePathTv.setEnabled(false);
-                    changeFolderPathTv.setEnabled(true);
+                    changeFilePathTv.setVisibility(View.GONE);
+                    changeFolderPathTv.setVisibility(View.VISIBLE);
                 }
 
                 title.setText("路径设置");
