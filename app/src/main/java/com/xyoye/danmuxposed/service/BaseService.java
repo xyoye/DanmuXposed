@@ -5,12 +5,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.support.annotation.Nullable;
-import android.util.Log;
-import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -27,7 +23,6 @@ import com.xyoye.danmuxposed.utils.Animation;
 
 import org.greenrobot.eventbus.EventBus;
 
-import butterknife.BindView;
 import master.flame.danmaku.ui.widget.DanmakuView;
 
 /**

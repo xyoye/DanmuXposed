@@ -25,7 +25,8 @@ public class MainXposed implements IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable {
-        if ("com.mxtech.videoplayer.pro".equals(loadPackageParam.packageName)){
+        if ("com.mxtech.videoplayer.pro".equals(loadPackageParam.packageName) ||
+                "com.mxtech.videoplayer".equals(loadPackageParam.packageName) ){
             onMXStart(loadPackageParam);
             try{
                 //开始

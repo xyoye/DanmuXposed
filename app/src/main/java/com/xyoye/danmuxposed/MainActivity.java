@@ -2,6 +2,7 @@ package com.xyoye.danmuxposed;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -159,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String read_folder_path;
     private boolean donation_type = true;
     Animation rotateAnim;
+    Dialog dialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -249,9 +251,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initListener(){
         drawerListView.setOnItemClickListener(this);
-
         circleImageView.setOnClickListener(this);
-
         defaultFontSize.setOnClickListener(this);
         defaultSpeed.setOnClickListener(this);
         shieldActivityBt.setOnClickListener(this);
@@ -260,6 +260,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonDanmuIv.setOnClickListener(this);
         topDanmuIv.setOnClickListener(this);
         donation.setOnClickListener(this);
+        changeFilePathTv.setOnClickListener(this);
+        changeFolderPathTv.setOnClickListener(this);
+        pathSettingConfirmBt.setOnClickListener(this);
+
         fontSizeInput.setOnAmountChangeListener(new AmountView.OnAmountChangeListener() {
             @Override
             public void onAmountChange(View view, float value) {
@@ -274,10 +278,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 EventBus.getDefault().post(new Event(Event.EVENT_DANMU_SPEED,danmu_speed));
             }
         });
-
-        changeFilePathTv.setOnClickListener(this);
-        changeFolderPathTv.setOnClickListener(this);
-        pathSettingConfirmBt.setOnClickListener(this);
 
         readTypeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -679,8 +679,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+        donationIv.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                dialog.cancel();
+                return false;
+            }
+        });
         builder_donation.setView(dialogView);
-        builder_donation.show();
+        dialog = builder_donation.show();
     }
 
     @Override

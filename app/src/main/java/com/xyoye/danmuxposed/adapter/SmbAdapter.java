@@ -1,6 +1,7 @@
 package com.xyoye.danmuxposed.adapter;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,13 +19,11 @@ import java.util.List;
 
 public class SmbAdapter extends RecyclerView.Adapter<SmbAdapter.ViewHolder> {
 
-    private Context mContext;
     private LayoutInflater mInflater;
     private List<SmbInfo> mData;
     private SmbActivity.ItemClickCallback callback;
 
     public SmbAdapter(Context mContext, List<SmbInfo> mData, SmbActivity.ItemClickCallback callback) {
-        this.mContext = mContext;
         this.mData = mData;
         this.callback = callback;
         mInflater = LayoutInflater.from(mContext);
@@ -33,12 +32,11 @@ public class SmbAdapter extends RecyclerView.Adapter<SmbAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.item_folder_chooser, parent, false);
-        ViewHolder holder = new ViewHolder(view);
-        return holder;
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         final SmbInfo info = mData.get(position);
         holder.name.setText(info.getName() == null ? "" : info.getName());
 
