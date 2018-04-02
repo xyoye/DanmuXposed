@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.layout1)
     RelativeLayout layout1;
     @BindView(R.id.main_switch)
-    CircleImageView circleImageView;
+    CircleImageView main_switch;
 
     //layout2
     @BindView(R.id.layout2)
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         rotateAnim = AnimationUtils.loadAnimation(this, R.anim.rotate_image);
         LinearInterpolator lin = new LinearInterpolator();//设置动画匀速运动
         rotateAnim.setInterpolator(lin);
-        circleImageView.setAnimation(rotateAnim);
+        main_switch.setAnimation(rotateAnim);
         rotateAnim.cancel();
 
         title.setText(getResources().getString(R.string.main_title));
@@ -236,13 +236,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DrawerAdapter drawerAdapter = new DrawerAdapter(drawerText,drawerImage,this);
         drawerListView.setAdapter(drawerAdapter);
 
-        circleImageView.setImageResource(R.mipmap.earth_gary);
+        main_switch.setImageResource(R.mipmap.earth_gary);
         danmuStart = false;
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         assert manager != null;
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if ("com.xyoye.danmuxposed.service.DanmuService".equals(service.service.getClassName())) {
-                circleImageView.setImageResource(R.mipmap.earth_colour);
+                main_switch.setImageResource(R.mipmap.earth_colour);
                 rotateAnim.start();
                 danmuStart = true;
             }
@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initListener(){
         drawerListView.setOnItemClickListener(this);
-        circleImageView.setOnClickListener(this);
+        main_switch.setOnClickListener(this);
         defaultFontSize.setOnClickListener(this);
         defaultSpeed.setOnClickListener(this);
         shieldActivityBt.setOnClickListener(this);
@@ -420,14 +420,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 danmuStart = true;
                 Intent intent = new Intent(MainActivity.this, DanmuService.class);
                 startService(intent);
-                circleImageView.setImageResource(R.mipmap.earth_colour);
+                main_switch.setImageResource(R.mipmap.earth_colour);
                 rotateAnim.start();
                 finish();
             }else{
                 danmuStart = false;
                 Intent intent = new Intent(MainActivity.this, DanmuService.class);
                 stopService(intent);
-                circleImageView.setImageResource(R.mipmap.earth_gary);
+                main_switch.setImageResource(R.mipmap.earth_gary);
                 rotateAnim.cancel();
             }
         }else {
@@ -712,6 +712,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String shieldN = databaseDao.queryAllShield().size()+"";
         shieldNumberTv.setText(shieldN);
         if (danmuStart){
+            main_switch.setAnimation(rotateAnim);
             rotateAnim.start();
         }
     }
@@ -719,7 +720,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause() {
         super.onPause();
-        rotateAnim.cancel();
+        main_switch.clearAnimation();
     }
 
     @Override
