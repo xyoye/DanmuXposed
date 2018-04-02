@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -59,6 +58,7 @@ import butterknife.ButterKnife;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.BUTTON_DANMU_KEY;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_FONT_SIZE_KEY;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_SPEED_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.DEFAULT_FOLDER;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.FILE;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.FOLDER;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.MOBILE_DANMU_KEY;
@@ -148,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<Integer> drawerImage;
     private boolean waitExit = true;
     private int displayLayout; //当前页：0:首页，1：弹幕设置，2：路径设置，3：删除缓存，4：空白，5：使用介绍，6：关于
-    private String defaultFolder = Environment.getExternalStorageDirectory().getAbsolutePath()+"/DanmuXposed/";
 
     private float font_size;
     private float danmu_speed;
@@ -503,7 +502,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 2:
                 read_file_type = preferencesHelper.getInteger(READ_FILE_TYPE_KEY,FOLDER);
                 read_file_path = preferencesHelper.getString(READ_FILE_PATH_KEY,"");
-                read_folder_path = preferencesHelper.getString(READ_FOLDER_PATH_KEY,defaultFolder);
+                read_folder_path = preferencesHelper.getString(READ_FOLDER_PATH_KEY,DEFAULT_FOLDER);
 
                 folderPathTv.setText(read_folder_path);
                 filePathTv.setText(read_file_path);
@@ -560,7 +559,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 2:
                 if(read_file_type != preferencesHelper.getInteger(READ_FILE_TYPE_KEY,FOLDER) ||
                         !preferencesHelper.getString(READ_FILE_PATH_KEY,"").equals(read_file_path) ||
-                        !preferencesHelper.getString(READ_FOLDER_PATH_KEY,defaultFolder).equals(read_folder_path))
+                        !preferencesHelper.getString(READ_FOLDER_PATH_KEY,DEFAULT_FOLDER).equals(read_folder_path))
                 {
                     changePageDialog(layoutN);
                 }else
