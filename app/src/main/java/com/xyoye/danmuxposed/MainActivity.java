@@ -22,6 +22,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -41,6 +44,7 @@ import com.xyoye.danmuxposed.ui.FolderChooserActivity;
 import com.xyoye.danmuxposed.ui.ShieldingActivity;
 import com.xyoye.danmuxposed.utils.ToastUtil;
 import com.xyoye.danmuxposed.weight.AmountView;
+import com.xyoye.danmuxposed.weight.CircleImageView;
 import com.xyoye.danmuxposed.weight.SubmitButton;
 
 import org.greenrobot.eventbus.EventBus;
@@ -75,8 +79,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //layout1
     @BindView(R.id.layout1)
     RelativeLayout layout1;
-    @BindView(R.id.danmu_switch)
-    Button danmuSwitch;
+    @BindView(R.id.main_switch)
+    CircleImageView circleImageView;
 
     //layout2
     @BindView(R.id.layout2)
@@ -154,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String read_file_path;
     private String read_folder_path;
     private boolean donation_type = true;
+    Animation rotateAnim;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -196,6 +201,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView(){
+
+        rotateAnim = AnimationUtils.loadAnimation(this, R.anim.rotate_image);
+        LinearInterpolator lin = new LinearInterpolator();//设置动画匀速运动
+        rotateAnim.setInterpolator(lin);
+        circleImageView.setAnimation(rotateAnim);
+        rotateAnim.cancel();
+
         title.setText(getResources().getString(R.string.main_title));
         setSupportActionBar(toolbar);
         ActionBar actionBar =  getSupportActionBar();
@@ -222,13 +234,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DrawerAdapter drawerAdapter = new DrawerAdapter(drawerText,drawerImage,this);
         drawerListView.setAdapter(drawerAdapter);
 
-        danmuSwitch.setText("启动监听" );
+        circleImageView.setImageResource(R.mipmap.earth_gary);
         danmuStart = false;
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         assert manager != null;
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if ("com.xyoye.danmuxposed.service.DanmuService".equals(service.service.getClassName())) {
-                danmuSwitch.setText("关闭监听" );
+                circleImageView.setImageResource(R.mipmap.earth_colour);
+                rotateAnim.start();
                 danmuStart = true;
             }
         }
@@ -237,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initListener(){
         drawerListView.setOnItemClickListener(this);
 
-        danmuSwitch.setOnClickListener(this);
+        circleImageView.setOnClickListener(this);
 
         defaultFontSize.setOnClickListener(this);
         defaultSpeed.setOnClickListener(this);
@@ -301,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.danmu_switch:
+            case R.id.main_switch:
                 floatViewSwitch();
                 break;
             case R.id.default_font_size:
@@ -407,13 +420,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 danmuStart = true;
                 Intent intent = new Intent(MainActivity.this, DanmuService.class);
                 startService(intent);
-                danmuSwitch.setText("关闭监听");
+                circleImageView.setImageResource(R.mipmap.earth_colour);
+                rotateAnim.start();
                 finish();
             }else{
                 danmuStart = false;
                 Intent intent = new Intent(MainActivity.this, DanmuService.class);
                 stopService(intent);
-                danmuSwitch.setText("启动监听");
+                circleImageView.setImageResource(R.mipmap.earth_gary);
+                rotateAnim.cancel();
             }
         }else {
             ToastUtil.showToast(MainActivity.this,"请打开DanmuXposed读取文件权限");
