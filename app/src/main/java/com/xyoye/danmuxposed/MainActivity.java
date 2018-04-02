@@ -711,6 +711,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         String shieldN = databaseDao.queryAllShield().size()+"";
         shieldNumberTv.setText(shieldN);
+        if (danmuStart){
+            rotateAnim.start();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        rotateAnim.cancel();
     }
 
     @Override
