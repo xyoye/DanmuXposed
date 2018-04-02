@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -143,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<String> drawerText;
     private List<Integer> drawerImage;
     private boolean waitExit = true;
-    private int displayLayout; //0:首页，1：弹幕设置，2：路径设置
+    private int displayLayout; //当前页：0:首页，1：弹幕设置，2：路径设置，3：删除缓存，4：空白，5：使用介绍，6：关于
     private String defaultFolder = Environment.getExternalStorageDirectory().getAbsolutePath()+"/DanmuXposed/";
 
     private float font_size;
@@ -369,10 +368,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 deleteData();
                 break;
             case 5:
-                showAbout(1);
+                checkOutSave(5);
                 break;
             case 6:
-                showAbout(2);
+                checkOutSave(6);
                 break;
         }
     }
@@ -449,7 +448,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * 切换界面
-     * @param layoutN 0：主页，1：弹幕设置，2：路径设置
      */
     private void changePage(int layoutN){
         displayLayout = layoutN;
@@ -511,6 +509,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 layout4.setVisibility(View.GONE);
                 mDrawerLayout.closeDrawers();
                 break;
+            case 5:
+                showAbout(5);
+                break;
+            case 6:
+                showAbout(6);
+                break;
         }
     }
 
@@ -546,6 +550,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     changePageDialog(layoutN);
                 }else
                     changePage(layoutN);
+                break;
+            case 5:
+                changePage(layoutN);
+                break;
+            case 6:
+                changePage(layoutN);
                 break;
         }
     }
@@ -588,6 +598,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * 删除缓存
+     */
     private void deleteData(){
         final AlertDialog.Builder builder_delete = new AlertDialog.Builder(MainActivity.this);
         View dialogView = View.inflate(MainActivity.this,R.layout.dialog_delete,null);
@@ -609,6 +622,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder_delete.show();
     }
 
+    /**
+     * 展示关于与使用说明
+     */
     private void showAbout(int type){
         layout1.setVisibility(View.GONE);
         layout2.setVisibility(View.GONE);
@@ -616,12 +632,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         layout4.setVisibility(View.VISIBLE);
         mDrawerLayout.closeDrawers();
         switch (type){
-            case 1:
+            case 5:
                 donation.setVisibility(View.GONE);
                 title.setText("使用说明");
                 aboutText.setText(getResources().getString(R.string.about_use));
                 break;
-            case 2:
+            case 6:
                 donation.setVisibility(View.VISIBLE);
                 title.setText("关于");
                 aboutText.setText(getResources().getString(R.string.about_model));
@@ -629,6 +645,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * 展示捐赠窗口
+     */
     private void showDonationDialog(){
         final AlertDialog.Builder builder_donation = new AlertDialog.Builder(MainActivity.this);
         View dialogView = View.inflate(MainActivity.this,R.layout.dialog_donation,null);

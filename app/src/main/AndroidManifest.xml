@@ -35,7 +35,7 @@
 
         <meta-data
             android:name="xposeddescription"
-            android:value="测试Xposed模块" />
+            android:value="DanmuXposed" />
 
         <meta-data
             android:name="xposedminversion"

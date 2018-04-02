@@ -25,7 +25,6 @@ import master.flame.danmaku.danmaku.model.BaseDanmaku;
 import master.flame.danmaku.danmaku.model.DanmakuTimer;
 import master.flame.danmaku.danmaku.model.IDisplayer;
 import master.flame.danmaku.danmaku.model.android.DanmakuContext;
-import master.flame.danmaku.ui.widget.DanmakuView;
 
 import static com.xyoye.danmuxposed.utils.DanmuConfig.BUTTON_DANMU_KEY;
 import static com.xyoye.danmuxposed.utils.DanmuConfig.DANMU_FONT_SIZE_KEY;
@@ -197,6 +196,7 @@ public class DanmuService extends BaseService {
         }
     }
 
+    @SuppressLint("UseSparseArrays")
     public void initDanmuContext(){
         // 设置最大显示行数
         HashMap<Integer, Integer> maxLinesPair = new HashMap<>();
