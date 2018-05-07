@@ -54,7 +54,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="30dp"
                 android:textSize="16sp"
-                android:textColor="@color/textTipColor"
+                android:textColor="@color/textActionColor"
                 android:text="@string/restore_default"/>
         </RelativeLayout>
 
@@ -102,7 +102,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="30dp"
                 android:textSize="16sp"
-                android:textColor="@color/textTipColor"
+                android:textColor="@color/textActionColor"
                 android:text="@string/restore_default"/>
         </RelativeLayout>
 
@@ -208,7 +208,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:textSize="16sp"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@color/textTipColor"
                 android:text="@string/shielding_number"/>
 
             <TextView
@@ -218,7 +218,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="85dp"
                 android:textSize="16sp"
-                android:textColor="@android:color/darker_gray"/>
+                android:textColor="@color/textTipColor"/>
 
             <Button
                 android:id="@+id/shielding_activity_bt"

@@ -287,13 +287,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         changeFilePathTv.setVisibility(View.VISIBLE);
                         changeFolderPathTv.setVisibility(View.GONE);
                         changeFilePathTv.setTextColor(Color.parseColor("#33b5e5"));
-                        changeFolderPathTv.setTextColor(Color.parseColor("#8a8a8a"));
                         break;
                     case R.id.read_folder_radio:
                         read_file_type = FOLDER;
                         changeFilePathTv.setVisibility(View.GONE);
                         changeFolderPathTv.setVisibility(View.VISIBLE);
-                        changeFilePathTv.setTextColor(Color.parseColor("#8a8a8a"));
                         changeFolderPathTv.setTextColor(Color.parseColor("#33b5e5"));
                         break;
                 }

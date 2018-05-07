@@ -24,6 +24,7 @@
 
     <color name="toolbarColor">#88313b44</color>
     <color name="statusColor">#1a97f9</color>
-    <color name="textTipColor">@android:color/holo_blue_light</color>
+    <color name="textTipColor">@android:color/white</color>
+    <color name="textActionColor">#33b5e5</color>
     <color name="divider">#ffd2d2d2</color>
 </resources>
