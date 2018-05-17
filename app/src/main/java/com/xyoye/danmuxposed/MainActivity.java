@@ -40,8 +40,10 @@ import com.xyoye.danmuxposed.bean.Event;
 import com.xyoye.danmuxposed.database.DatabaseDao;
 import com.xyoye.danmuxposed.database.SharedPreferencesHelper;
 import com.xyoye.danmuxposed.service.DanmuService;
+import com.xyoye.danmuxposed.ui.DownloadActivity;
 import com.xyoye.danmuxposed.ui.FolderChooserActivity;
 import com.xyoye.danmuxposed.ui.ShieldingActivity;
+import com.xyoye.danmuxposed.utils.DanmuConfig;
 import com.xyoye.danmuxposed.utils.ToastUtil;
 import com.xyoye.danmuxposed.weight.AmountView;
 import com.xyoye.danmuxposed.weight.CircleImageView;
@@ -126,6 +128,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView changeFolderPathTv;
     @BindView(R.id.path_setting_update)
     Button pathSettingConfirmBt;
+    @BindView(R.id.download_danmu)
+    TextView downloadDanmu;
 
     //layout4
     @BindView(R.id.layout4)
@@ -262,6 +266,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         changeFilePathTv.setOnClickListener(this);
         changeFolderPathTv.setOnClickListener(this);
         pathSettingConfirmBt.setOnClickListener(this);
+        downloadDanmu.setOnClickListener(this);
 
         fontSizeInput.setOnAmountChangeListener(new AmountView.OnAmountChangeListener() {
             @Override
@@ -349,6 +354,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.change_folder_path:
                 selectPath(true);
+                break;
+            case R.id.download_danmu:
+                String path = preferencesHelper.getString(DanmuConfig.READ_FOLDER_PATH_KEY,"");
+                int type = preferencesHelper.getInteger(DanmuConfig.READ_FILE_TYPE_KEY,FOLDER);
+                if (!path.isEmpty() && type == FOLDER){
+                    Intent downloadIntent = new Intent(MainActivity.this, DownloadActivity.class);
+                    startActivity(downloadIntent);
+                }else {
+                    ToastUtil.showToast(MainActivity.this, "请选择从文件夹读取弹幕");
+                }
                 break;
             case R.id.danmu_setting_confirm:
                 saveInfo(1);

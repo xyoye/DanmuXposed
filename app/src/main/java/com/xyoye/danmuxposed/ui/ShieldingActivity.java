@@ -33,12 +33,12 @@ import butterknife.ButterKnife;
  */
 
 public class ShieldingActivity extends AppCompatActivity implements View.OnClickListener {
-    @BindView(R.id.shielding_labels)
-    LabelsView shieldingLabels;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.title)
     TextView title;
+    @BindView(R.id.shielding_labels)
+    LabelsView shieldingLabels;
     @BindView(R.id.input_shield_et)
     EditText shieldEt;
     @BindView(R.id.add_shield_bt)
@@ -54,7 +54,6 @@ public class ShieldingActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_shielding);
         ButterKnife.bind(this);
         title.setText("屏蔽列表");
-        shieldBt.setOnClickListener(this);
         setSupportActionBar(toolbar);
         ActionBar actionBar =  getSupportActionBar();
         if(actionBar != null) {
@@ -62,6 +61,7 @@ public class ShieldingActivity extends AppCompatActivity implements View.OnClick
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
+        shieldBt.setOnClickListener(this);
         databaseDao = new DatabaseDao(this);
         shieldList = databaseDao.queryAllShield();
         shieldingLabels.setLabels(shieldList);

@@ -27,6 +27,9 @@
 
         <activity android:name=".ui.SmbActivity"/>
 
+        <activity android:name=".ui.DownloadActivity">
+        </activity>
+
         <service android:name=".service.DanmuService"/>
 
         <meta-data

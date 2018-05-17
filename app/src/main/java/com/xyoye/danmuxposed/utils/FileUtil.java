@@ -1,6 +1,11 @@
 package com.xyoye.danmuxposed.utils;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,5 +42,36 @@ public class FileUtil {
             }
         }
         return list;
+    }
+
+    public static void writeXmlFile(String xmlContent, String fileName , String path){
+        FileOutputStream fos;
+        BufferedWriter bw = null;
+        try {
+            String localPath = path + "/" + fileName+".xml";
+
+            File folder = new File(path);
+            if (!folder.exists()) {
+                if (folder.mkdirs()){
+                    System.out.println("成功创建文件夹");
+                }
+            }
+
+            fos = new FileOutputStream(localPath, false);
+            bw = new BufferedWriter(new OutputStreamWriter(fos, Charset.forName("utf-8")));
+            bw.write(xmlContent);
+            bw.newLine();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bw != null) {
+                    bw.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
