@@ -44,5 +44,6 @@ dependencies {
     compile project(':ndkbitmap-armv5')
     compile project(':ndkbitmap-armv7a')
     compile project(':ndkbitmap-x86')
-    compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.9.1'
+    compile 'com.squareup.okhttp3:okhttp:3.9.1'
+    implementation files('libs/gson-2.8.2.jar')
 }

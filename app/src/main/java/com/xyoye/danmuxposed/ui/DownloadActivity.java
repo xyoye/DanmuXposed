@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xyoye.danmuxposed.R;
+import com.xyoye.danmuxposed.utils.DownloadUtil;
+import com.xyoye.danmuxposed.utils.ToastUtil;
 import com.xyoye.danmuxposed.weight.DownloadDialog;
 
 import butterknife.BindView;
@@ -63,12 +65,25 @@ public class DownloadActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()){
             case R.id.download_by_av:
                 String avNumber = avInputEt.getText().toString();
-                DownloadDialog downloadByAvDialog = new DownloadDialog(DownloadActivity.this, R.style.Dialog_Et, avNumber, "av");
-                downloadByAvDialog.show();
+                if (avNumber.isEmpty()){
+                    ToastUtil.showToast(DownloadActivity.this, "视频链接不能为空");
+                }else if(!DownloadUtil.isNum(avNumber)){
+                    ToastUtil.showToast(DownloadActivity.this, "请输入纯数字AV号");
+                }else {
+                    DownloadDialog downloadByAvDialog = new DownloadDialog(DownloadActivity.this, R.style.Dialog_Et, avNumber, "av");
+                    downloadByAvDialog.show();
+                }
+                break;
             case R.id.download_by_url:
                 String urlLink = urlInputEt.getText().toString();
-                DownloadDialog downloadByUrlDialog = new DownloadDialog(DownloadActivity.this, R.style.Dialog_Et, urlLink, "url");
-                downloadByUrlDialog.show();
+                if (urlLink.isEmpty()){
+                    ToastUtil.showToast(DownloadActivity.this, "视频链接不能为空");
+                }else if (!DownloadUtil.isUrl(urlLink)){
+                    ToastUtil.showToast(DownloadActivity.this, "请输入正确视频链接");
+                }else {
+                    DownloadDialog downloadByUrlDialog = new DownloadDialog(DownloadActivity.this, R.style.Dialog_Et, urlLink, "url");
+                    downloadByUrlDialog.show();
+                }
                 break;
             case R.id.select_url_bt:
 

@@ -13,7 +13,7 @@
             android:id="@+id/scrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="15dp"
             android:layout_alignParentTop="true"
             android:scrollbarStyle="outsideOverlay"
             android:background="@drawable/et_log_background">
@@ -24,6 +24,7 @@
                 android:padding="5dp"
                 android:gravity="top"
                 android:minLines="10"
+                android:maxLines="10"
                 android:textSize="14sp"
                 android:lineSpacingMultiplier="1.1"
                 android:scrollbars="vertical"
@@ -35,8 +36,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/scrollview"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:orientation="horizontal">
 
             <TextView
@@ -59,13 +60,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/change_file_ll"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/btn_corner_blue"
             style="@style/Widget.AppCompat.Button"
             android:textColor="@android:color/white"
             android:textSize="14sp"
+            android:enabled="false"
             android:text="开始下载"/>
 
         <Button
@@ -82,38 +83,6 @@
             android:textSize="14sp"
             android:text="完成"
             android:visibility="gone"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_below="@id/change_file_ll">
-            <Button
-                android:id="@+id/download_more_cancel_bt"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/btn_corner_divider"
-                style="@style/Widget.AppCompat.Button"
-                android:textColor="@android:color/black"
-                android:textSize="14sp"
-                android:text="取消"
-                android:visibility="gone"/>
-            <Button
-                android:id="@+id/download_more_confirm_bt"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/btn_corner_blue"
-                style="@style/Widget.AppCompat.Button"
-                android:textColor="@android:color/white"
-                android:textSize="14sp"
-                android:text="确定"
-                android:visibility="gone"/>
-        </LinearLayout>
     </RelativeLayout>
 
 </RelativeLayout>

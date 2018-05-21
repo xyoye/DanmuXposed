@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
@@ -52,4 +53,29 @@ public class DownloadUtil {
         }
         return null;
     }
+
+    public static boolean isNum(String str){
+
+        Pattern pattern = Pattern.compile("^-?[0-9]+");
+        if(pattern.matcher(str).matches()){
+            //数字
+            return true;
+        } else {
+            //非数字
+            return false;
+        }
+    }
+
+    public static boolean isUrl(String str){
+        String regex = "^([hH][tT]{2}[pP]://|[hH][tT]{2}[pP][sS]://)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+$";
+        Pattern pattern = Pattern.compile(regex);
+        if(pattern.matcher(str).matches()){
+            //数字
+            return true;
+        } else {
+            //非数字
+            return false;
+        }
+    }
+
 }
