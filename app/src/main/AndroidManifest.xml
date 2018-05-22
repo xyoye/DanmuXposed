@@ -30,6 +30,8 @@
         <activity android:name=".ui.DownloadActivity">
         </activity>
 
+        <activity android:name=".ui.WebviewActivity"/>
+
         <service android:name=".service.DanmuService"/>
 
         <meta-data

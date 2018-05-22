@@ -144,7 +144,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:textColor="@color/textActionColor"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:text="下载弹幕"/>
 
     </LinearLayout>

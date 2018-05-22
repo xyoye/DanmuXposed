@@ -1,5 +1,6 @@
 package com.xyoye.danmuxposed.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -22,6 +23,8 @@ import butterknife.ButterKnife;
  */
 
 public class DownloadActivity extends AppCompatActivity implements View.OnClickListener{
+    public final static int SELECT_WEB = 101;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.title)
@@ -66,7 +69,7 @@ public class DownloadActivity extends AppCompatActivity implements View.OnClickL
             case R.id.download_by_av:
                 String avNumber = avInputEt.getText().toString();
                 if (avNumber.isEmpty()){
-                    ToastUtil.showToast(DownloadActivity.this, "视频链接不能为空");
+                    ToastUtil.showToast(DownloadActivity.this, "AV号不能为空");
                 }else if(!DownloadUtil.isNum(avNumber)){
                     ToastUtil.showToast(DownloadActivity.this, "请输入纯数字AV号");
                 }else {
@@ -86,8 +89,25 @@ public class DownloadActivity extends AppCompatActivity implements View.OnClickL
                 }
                 break;
             case R.id.select_url_bt:
-
+                Intent intent = new Intent(DownloadActivity.this, WebviewActivity.class);
+                startActivityForResult(intent, SELECT_WEB);
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SELECT_WEB && data!=null){
+            String selectUrl = data.getStringExtra("selectUrl");
+            if (selectUrl.isEmpty()){
+                ToastUtil.showToast(DownloadActivity.this, "视频链接不能为空");
+            }else if (!DownloadUtil.isUrl(selectUrl)){
+                ToastUtil.showToast(DownloadActivity.this, "请输入正确视频链接");
+            }else {
+                DownloadDialog downloadByUrlDialog = new DownloadDialog(DownloadActivity.this, R.style.Dialog_Et, selectUrl, "url");
+                downloadByUrlDialog.show();
+            }
         }
     }
 }

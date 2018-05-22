@@ -186,9 +186,9 @@ public class DownloadDialog extends Dialog {
             String root = Jsoup.connect(url).timeout(10000).get().toString();
             sendLogMessage("连接URL成功\n");
 
-            if(url.contains("www.bilibili.com/video")){
+            if(url.contains("www.bilibili.com/video") || url.contains("m.bilibili.com/video")){
                 getVideoCid(root);
-            }else if (url.contains("www.bilibili.com/bangumi")){
+            }else if (url.contains("www.bilibili.com/bangumi") || url.contains("m.bilibili.com/bangumi")){
                 getAnimaCid(root);
             }else {
                 sendLogMessage("错误的视频链接\n");

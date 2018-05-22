@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawerImage = new ArrayList<>();
         drawerText.add("主界面");
         drawerText.add("弹幕设置");
-        drawerText.add("路径设置");
+        drawerText.add("弹幕管理");
         drawerText.add("清除数据");
         drawerText.add("");
         drawerText.add("使用介绍");
@@ -529,7 +529,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     changeFolderPathTv.setVisibility(View.VISIBLE);
                 }
 
-                title.setText("路径设置");
+                title.setText("弹幕管理");
                 layout1.setVisibility(View.GONE);
                 layout2.setVisibility(View.GONE);
                 layout3.setVisibility(View.VISIBLE);
