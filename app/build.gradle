@@ -6,8 +6,6 @@ android {
         applicationId "com.xyoye.danmuxposed"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 2
-        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
