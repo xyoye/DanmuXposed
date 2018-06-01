@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:textSize="16sp"/>
 
-    <com.xyoye.danmuxposed.weight.SubmitButton
+    <com.xyoye.danmuxposed.ui.weight.SubmitButton
         android:id="@+id/delete_bt"
         android:layout_width="200dp"
         android:layout_height="50dp"

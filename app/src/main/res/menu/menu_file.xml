@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.FolderChooserActivity">
+    tools:context=".ui.activities.FolderChooserActivity">
     <item
         android:id="@+id/select_button"
         android:icon="@mipmap/selected"

@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ui.activities.MainActivity">
 
     <!--DrawerLayout-->
-    <include layout="@layout/layout_drawer" />
+    <include layout="@layout/fragment_drawer" />
 
     <!--Toolbar-->
     <include layout="@layout/toolbar"/>

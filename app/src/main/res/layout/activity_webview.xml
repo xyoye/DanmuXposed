@@ -7,12 +7,12 @@
 
     <include layout="@layout/toolbar2"/>
 
-    <com.xyoye.danmuxposed.weight.IWebView
+    <com.xyoye.danmuxposed.ui.weight.IWebView
         android:id="@+id/i_webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
         tools:ignore="UnknownIdInLayout">
-    </com.xyoye.danmuxposed.weight.IWebView>
+    </com.xyoye.danmuxposed.ui.weight.IWebView>
 
 </RelativeLayout>

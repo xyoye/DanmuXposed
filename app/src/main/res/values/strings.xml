@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">DanmuXposed</string>
     <string name="main_title">弹幕播放器</string>
+    <string name="setting_title">弹幕设置</string>
+    <string name="path_title">路径设置</string>
+    <string name="about_title">关于</string>
+    <string name="intro_title">使用说明</string>
     <string name="font_size">字体大小</string>
     <string name="danmuSwitchText">启动监听</string>
     <string name="open">开启</string>

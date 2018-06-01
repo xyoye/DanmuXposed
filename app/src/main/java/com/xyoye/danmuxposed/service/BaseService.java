@@ -1,12 +1,16 @@
 package com.xyoye.danmuxposed.service;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,6 +23,7 @@ import android.widget.TextView;
 import com.xyoye.danmuxposed.R;
 import com.xyoye.danmuxposed.bean.Event;
 import com.xyoye.danmuxposed.receiver.EventBroadcast;
+import com.xyoye.danmuxposed.ui.activities.MainActivity;
 import com.xyoye.danmuxposed.utils.Animation;
 
 import org.greenrobot.eventbus.EventBus;
@@ -85,7 +90,14 @@ public abstract class BaseService extends Service {
         wmParams = new WindowManager.LayoutParams();
         wmParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
         wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        wmParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startNotification();
+            wmParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        }else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            wmParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+        }else {
+            wmParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+        }
         wmParams.format = PixelFormat.RGBA_8888;
         wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
         wmParams.gravity = Gravity.CENTER | Gravity.RIGHT;
@@ -161,6 +173,20 @@ public abstract class BaseService extends Service {
                 return false;
             }
         });
+    }
+
+    private void startNotification(){
+        Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
+        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setTicker("DanmuXposed")
+                .setWhen(System.currentTimeMillis())
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText("DanmuXposed正在运行")
+                .setContentIntent(pendingIntent);
+        Notification notification = mNotifyBuilder.build();
+        startForeground(101, notification);
     }
 
     @Override

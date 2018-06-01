@@ -3,30 +3,26 @@ package com.xyoye.danmuxposed.database;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.xyoye.danmuxposed.base.IApplication;
+
 /**
  * Created by xyy on 2017/12/24.
  */
 
 public class SharedPreferencesHelper {
     private static final String danmuxposed = "danmuxposed";
-    private static SharedPreferencesHelper instance;
     private static SharedPreferences mSharedPreferences;
 
-    private SharedPreferencesHelper(Context context){
-        mSharedPreferences = context.getSharedPreferences(danmuxposed, Context.MODE_PRIVATE);
+    private static class Instance {
+        private static SharedPreferencesHelper preferencesHelper = new SharedPreferencesHelper();
     }
 
-    public static synchronized void init(Context context){
-        if (instance == null){
-            instance = new SharedPreferencesHelper(context);
-        }
+    private SharedPreferencesHelper() {
+        mSharedPreferences = IApplication.getContextObject().getSharedPreferences(danmuxposed, Context.MODE_PRIVATE);
     }
 
-    public static SharedPreferencesHelper getInstance(){
-        if (instance == null){
-            throw new RuntimeException("class should init !");
-        }
-        return instance;
+    public static SharedPreferencesHelper getInstance() {
+        return Instance.preferencesHelper;
     }
 
     /**
