@@ -17,17 +17,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.xyoye.danmuxposed.R;
-import com.xyoye.danmuxposed.ui.adapter.DrawerAdapter;
 import com.xyoye.danmuxposed.bean.Event;
 import com.xyoye.danmuxposed.database.DatabaseDao;
 import com.xyoye.danmuxposed.database.SharedPreferencesHelper;
+import com.xyoye.danmuxposed.ui.adapter.DrawerAdapter;
 import com.xyoye.danmuxposed.ui.fragment.AboutFragment;
 import com.xyoye.danmuxposed.ui.fragment.DanmuPathFragment;
 import com.xyoye.danmuxposed.ui.fragment.DanmuSettingFragment;
 import com.xyoye.danmuxposed.ui.fragment.MainFragment;
+import com.xyoye.danmuxposed.ui.weight.SubmitButton;
 import com.xyoye.danmuxposed.utils.ToastUtil;
 import com.xyoye.danmuxposed.utils.permissionchecker.PermissionHelper;
-import com.xyoye.danmuxposed.ui.weight.SubmitButton;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -36,6 +36,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.xyoye.danmuxposed.utils.DanmuConfig.DEFAULT_FOLDER;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.FOLDER;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.READ_FILE_TYPE_KEY;
+import static com.xyoye.danmuxposed.utils.DanmuConfig.READ_FOLDER_PATH_KEY;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
     @BindView(R.id.toolbar)
@@ -66,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        firstStart();
 
         initData();
 
@@ -245,6 +252,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         } else {
             finish();
             System.exit(0);
+        }
+    }
+
+    private void firstStart(){
+        SharedPreferencesHelper preferencesHelper = SharedPreferencesHelper.getInstance();
+        if (preferencesHelper.getBoolean("firstStart",true)){
+            preferencesHelper.saveBoolean("firstStart", false);
+            preferencesHelper.saveInteger(READ_FILE_TYPE_KEY, FOLDER);
+            preferencesHelper.saveString(READ_FOLDER_PATH_KEY, DEFAULT_FOLDER);
         }
     }
 

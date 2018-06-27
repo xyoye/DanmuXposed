@@ -1,10 +1,6 @@
 package com.xyoye.danmuxposed.service;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 
@@ -12,7 +8,6 @@ import com.xyoye.danmuxposed.R;
 import com.xyoye.danmuxposed.bean.Event;
 import com.xyoye.danmuxposed.database.DatabaseDao;
 import com.xyoye.danmuxposed.database.SharedPreferencesHelper;
-import com.xyoye.danmuxposed.ui.activities.MainActivity;
 import com.xyoye.danmuxposed.utils.BiliDanmukuParser;
 import com.xyoye.danmuxposed.utils.FileUtil;
 
